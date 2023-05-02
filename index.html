@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>CodePen - Vertically-scrolling Text</title>
+<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container" style="padding-top: 25px;">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 class="text-center text-danger">Honor Flight Gun Raffle</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <ul id ="names" class="">
+          <li>Mark	McConnell-Bailey</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="upload">
+        <div class="form-group">
+          <label for="input">Choose file</label>
+          <input type="file" id="input">
+        </div>
+        <button id="get-data" type="button" class="btn btn-success">PICK NAME</button>
+        <button id="reset" type="button" class="btn btn-danger">RESET</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- partial --> 
+
+<script>
+	//empty array to put array of rows from excel data
+	let data = [];
+	
+	//empty array of random contestants
+	let players = [];
+	
+	//variables
+  	var input = document.getElementById('input');
+	let btn = document.getElementById('get-data');
+	let reset = document.getElementById('reset');
+	let names = document.getElementById('names');
+	
+	//reads file //grabs first sheet // promise of rows
+	readXlsxFile(input.files[0]).then(function(rows) {
+		
+		//on click of PICK NAME runs function
+		btn.addEventListener('click', function() {
+			//this counter keeps track of how many rows we have gone through
+			let counter = 0;
+			
+			//sets empty data array to the rows created from promise
+			data = rows;
+			
+			//a while loop that will keep looping while it's less than the length of the data array
+			while(counter < data.length){
+				
+				//randomly picks 1 person from excel sheet
+				let player = Math.floor(Math.random() * rows.length);
+				
+				//Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
+				let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
+				
+				//adds the 'person' to the 'players' array above
+				players.push(person);
+				
+				//adds 1 to the counter above
+				counter++;
+				
+			}
+			//uncomment below to see each 'players' array created
+			//console.log(players)
+			
+			//loops through the 'players', adds an LI element with the name of the 'person'
+			for(let i = 0; i < players.length; i++){
+				var li = document.createElement('li');
+				names.appendChild(li);
+				li.innerHTML=players[i][0];
+			}
+			//adds the 'list' class to the UL element to start the scroll animation
+			names.classList.add('list');
+			
+			//logs the last 'person' to the console, aka. The Winner and their email
+			console.log(players[players.length-1])
+	
+    });
+		//a reset button to restart the drawing BUT does not remove the logged 'winners'
+		reset.addEventListener('click', function(){
+			
+			//deletes all LI elements
+			names.innerHTML = '';
+			
+			//empties the 'players' array
+			players.length = 0;
+			
+			//removes the animation class from th UL element
+			names.classList.remove('list');
+			
+			//creates an empty LI element in the UL element(makes the animation look cleaner)
+			let li=document.createElement('li');
+				names.appendChild(li);
+	})
+  })
+//  	
+</script>
+</body>
+</html>

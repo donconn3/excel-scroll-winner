@@ -1,0 +1,102 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  display: flex;
+/*  font-size: 18px;*/
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.box {
+  height: 140px;
+	width: 100%;
+  margin: auto;
+  overflow: hidden;
+  position:relative;
+  border: solid 5px black;
+
+}
+.box::before {
+  top: 380px;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  content: "";
+  height:40px;
+  position: absolute;
+  background: linear-gradient(180deg, white, rgba(255, 255, 255, 0));
+}
+.box::after {
+  left: 0;
+  bottom: 370px;
+  z-index: 1;
+  width: 100%;
+  content: "";
+  height: 60px;
+  position: absolute;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), white);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+	
+/*the second value is the duration in seconds of the scroll animation*/
+  -webkit-animation: scrollUp 3s 0.16s forwards;
+          animation: scrollUp 3s 0.16s forwards;
+}
+ul li {
+  opacity: 1;
+  height: 120px;
+  padding: 10px;
+  list-style: none;
+  font-size: 80px;
+	text-justify: auto;
+	text-align: center;
+  margin-left: -40px;
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+@-webkit-keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+	
+/*changing the translateY value here helps line-up the winner with the box.*/ 
+/*Small lists - less decimals. Large lists (thousands) - more decimals*/
+	to {
+    transform: translateY(-99.9965%);
+  }
+}
+@keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+	
+/*changing the translateY value here helps line-up the winner with the box.*/ 
+/*Small lists - less decimals. Large lists (thousands) - more decimals*/
+  to {
+    transform: translateY(-99.9965%);
+  }
+}
