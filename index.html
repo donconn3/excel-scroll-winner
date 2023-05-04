@@ -4,14 +4,55 @@
 <meta charset="UTF-8">
 <title>CodePen - Vertically-scrolling Text</title>
 <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+<script src="https://unpkg.com/write-excel-file@1.x/bundle/write-excel-file.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+<!--How to use the page:
+File Format:
+1) The file format must be .xls or .xlsx
+2) ONLY Column 1 and Column 2  are displayed (firstName lastName) but column 3 is also read
+3) Empty Cells throw an error so make sure Col 1, Col 2, and Col 3 are all filled
+4) Col 3 can be any information you want (phone, email, raffle #, ticket #, etc.)
+i) The program has worked with over 28,000 rows with 2 columns & over 14,000 rows with 3 columns
+
+Operation:
+1) Upload your file
+2) Refresh the page
+3) Upload file again (not necessary but it hides the upload button)
+4) Click "Pick Name" (winner is the last person in the 'players' array created below. Winner(s) is logged to the console)
+5) Once the names stop scrolling, you will have your winner and "Congratualtions" will appear
+6) To draw another name, click "Reset" and then repeat Step 4
+i) DO NOT REFRESH PAGE OR ALL WINNER INFORMATION WILL BE LOST!
+ii) To use a different sheet, hover your mouse above (not on) the "Pick Name" button, repeat from Step 1 
+-->
 </head>
-<body>
+<body id="grad1">
 <!-- partial:index.partial.html -->
+<div id="menu" class="row">
+  <div class="panel panel-default col-xs-12">
+    <div class="panel-heading">
+      <h3 class="panel-title ">
+        <button type="button" class="btn btn-default" aria-label="Left Align"> <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> </button>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div id="file" class="form-group">
+        <label for="input">Choose file</label>
+        <input type="file" id="input">
+      </div>
+		<div class="trash">
+      <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="clearLocalStorage()"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Clear Local Storage </button>
+		</div>
+		<br>
+		<div class="download">
+      <button type="button" class="btn btn-info" aria-label="Left Align" onclick="exportPage()"> <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Winners </button>
+		</div>
+    </div>
+  </div>
+</div>
 <div class="container" style="padding-top: 25px;">
   <div class="row">
     <div class="col-xs-12">
@@ -20,22 +61,25 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <div class="box">
+      <div class="box confetti">
         <ul id ="names" class="">
-          <li>Mark	McConnell-Bailey</li>
+          <li></li>
         </ul>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
-      <div id="upload">
-        <div class="form-group">
-          <label for="input">Choose file</label>
-          <input type="file" id="input">
+    <div class="c9ol-xs-11">
+      <div class="message">
+        <h1 id="congrats" class="text-center bg-success">Congratulations!</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-10">
+        <div id="upload">
+          <button id="get-data" type="button" class="btn btn-success"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span> PICK NAME </button>
+          <button id="reset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> NEW DRAWING </button>
         </div>
-        <button id="get-data" type="button" class="btn btn-success">PICK NAME</button>
-        <button id="reset" type="button" class="btn btn-danger">RESET</button>
       </div>
     </div>
   </div>
@@ -43,28 +87,33 @@
 <!-- partial --> 
 
 <script>
-	//empty array to put array of rows from excel data
-	let data = [];
-	
-	//empty array of random contestants
-	let players = [];
-	
 	//variables
   	var input = document.getElementById('input');
 	let btn = document.getElementById('get-data');
 	let reset = document.getElementById('reset');
 	let names = document.getElementById('names');
+	let congrats = document.getElementById('congrats');
+	let form = document.getElementById('file');
+	const winners =[];
 	
-	//reads file //grabs first sheet // promise of rows
-	readXlsxFile(input.files[0]).then(function(rows) {
+//reads file //grabs first sheet // promise of rows
+readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
+		
+		//empty array to put array of rows from excel data
+		let data = [];
+			
+		//empty array of random contestants
+		let players = [];
 		
 		//on click of PICK NAME runs function
 		btn.addEventListener('click', function() {
+		
 			//this counter keeps track of how many rows we have gone through
 			let counter = 0;
 			
 			//sets empty data array to the rows created from promise
 			data = rows;
+			
 			
 			//a while loop that will keep looping while it's less than the length of the data array
 			while(counter < data.length){
@@ -87,20 +136,43 @@
 			
 			//loops through the 'players', adds an LI element with the name of the 'person'
 			for(let i = 0; i < players.length; i++){
-				var li = document.createElement('li');
+				let li=document.createElement('li');
 				names.appendChild(li);
 				li.innerHTML=players[i][0];
 			}
 			//adds the 'list' class to the UL element to start the scroll animation
 			names.classList.add('list');
+			congrats.classList.add('celebrate');
 			
 			//logs the last 'person' to the console, aka. The Winner and their email
-			console.log(players[players.length-1])
-	
-    });
-		//a reset button to restart the drawing BUT does not remove the logged 'winners'
-		reset.addEventListener('click', function(){
+			console.log(players[players.length-1]);
 			
+			//creates adate based on the computers date and time
+			const time = new Date();
+			let now = time.toLocaleString();
+			
+			//creates key/value pair of the winner into the local storage with the date as the key and winner name as the value
+			localStorage.setItem(now,players[players.length-1]);
+			
+			//creates a "winner" object with "date","name","contact"
+			let winner = {
+				date: now,
+				name: players[players.length-1][0],
+				contact: players[players.length-1][1]
+			};
+			
+			//adds "winner" object to GLOBAL "winners" array up top
+			winners.push(winner);
+			
+			//updates the localstorage key(names) with the updated "winners" array (adds redundancy)
+			localStorage.setItem('names', JSON.stringify(winners));
+			
+			
+								 
+    });
+		//resets the raffle game
+		reset.addEventListener('click', function(){
+
 			//deletes all LI elements
 			names.innerHTML = '';
 			
@@ -109,12 +181,44 @@
 			
 			//removes the animation class from th UL element
 			names.classList.remove('list');
+			congrats.classList.remove('celebrate');
 			
 			//creates an empty LI element in the UL element(makes the animation look cleaner)
 			let li=document.createElement('li');
-				names.appendChild(li);
-	})
+			names.appendChild(li);
+	});
+  });
+	
+//clears browser localstorage of winners
+function clearLocalStorage(){
+	localStorage.clear();
+};
+	
+//creates excel file of winners in localstorage and auto-downloads to computer
+function exportPage(){
+	const results = JSON.parse(localStorage.names);
+	const schema = [
+  {
+    column: 'Date/Time',
+    type: String,
+    value: results => results.date
+  },
+  {
+    column: 'Winner',
+    type: String,
+    value: results => results.name
+  },
+  {
+    column: 'Ticket/Email',
+    type: String,
+    value: results => results.contact
+  }
+];
+writeXlsxFile(results,{ schema, 
+    fileName: 'raffleWinners.xlsx'
   })
+};
+	
 //  	
 </script>
 </body>
