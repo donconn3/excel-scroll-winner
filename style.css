@@ -11,6 +11,11 @@ body {
   text-transform: uppercase;
 	background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
 }
+
+:root{
+	--num-rows: 28,000;
+}
+
 #grad1 {
   height: 200px;
   background-color: red; /* For browsers that do not support gradients */ 
@@ -197,7 +202,7 @@ ul li {
 /*Small lists - less decimals. Large lists (thousands) - more decimals*/
 /*formula for TranlateY = (-100% / #of-rows in excel file) x (#of-rows in excel file - 1) this gets it centered*/
 	to {
-    transform: translateY(-99.993264%);
+    transform: translateY(-99%);
   }
 }
 @keyframes scrollUp {
@@ -208,9 +213,10 @@ ul li {
 /*changing the translateY value here helps line-up the winner with the box.*/ 
 /*Small lists - less decimals. Large lists (thousands) - more decimals*/
   to {
-    transform: translateY(-99.993264%);
+    transform: translateY(-99%);
   }
 }
+
 @keyframes slide-in {
 	0% { transform: translateY(-100%); }
     100% { transform: translateY(0%); }
