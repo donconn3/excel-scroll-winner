@@ -12,9 +12,6 @@ body {
 	background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
 }
 
-:root{
-	--num-rows: 28,000;
-}
 
 #grad1 {
   height: 200px;
