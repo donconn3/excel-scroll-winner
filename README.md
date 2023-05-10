@@ -11,10 +11,10 @@ The source for the animation was from a PEN on CodePen(wish I could find it agai
 The excel file reader is from documentation.
 
 <h2>Basic steps:</h2>
-<ul>
+<ol>
   <li>Upload a file</li>
  <li>Change Title</li>
  <li>Set raffle duration</li>
  <li>Pick name</li>
  <li>Download Winner(s) </li>
-</ul>
+</ol>
