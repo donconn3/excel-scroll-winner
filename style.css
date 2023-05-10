@@ -1,5 +1,6 @@
 :root{
 	--doc-length: -99%;
+  --slider-value: 5s;
 }
 
 html {
@@ -28,7 +29,7 @@ body {
 .celebrate{
 	opacity: 0;
 	animation-name: fadeIn;
-	animation-delay: 6s;
+	animation-delay: calc(var(--slider-value) + 1s);
 	animation-duration: 1s;
 	animation-fill-mode: forwards
 }
@@ -112,8 +113,8 @@ body {
   padding: 0;
 	
 /*the second value is the duration in seconds of the scroll animation*/
-  -webkit-animation: scrollUp 5s 0.16s forwards;
-          animation: scrollUp 5s 0.16s forwards;
+  -webkit-animation: scrollUp var(--slider-value) 0.16s forwards;
+          animation: scrollUp var(--slider-value) 0.16s forwards;
 }
 ul li {
   opacity: 1;
