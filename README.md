@@ -8,9 +8,9 @@ Vertiaclly-scrolling list that has the appearance of fading in and out.
 
 The source for the animation was from a PEN on CodePen(wish I could find it again).
 
-The excel file reader is from documentation.
+Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vanilla JS, HTML, and CSS. 
 
-<h2>Basic steps:</h2>
+<h2>Basic steps (better instructions to come):</h2>
 <ol>
   <li>Upload a file</li>
  <li>Change Title</li>
