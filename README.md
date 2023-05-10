@@ -10,4 +10,9 @@ The source for the animation was from a PEN on CodePen(wish I could find it agai
 
 The excel file reader is from documentation.
 
-This will take finetuning to make it work exactly how you want.
+Basic steps:
+Upload a file
+Change Title
+Set raffle duration
+Pick name
+Download Winner(s) 
