@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <!--How to use the page:
 File Format:
 1) The file format must be .xls or .xlsx
@@ -58,13 +59,17 @@ ii) To use a different sheet, hover your mouse above (not on) the "Pick Name" bu
         <label for="input">Raffle Title</label><br>
         <input placeholder="Enter Title Here" type="text" id="raffle-title">
       </div>
+	  <div class="form-group">
+        <label id="duration" for="input">Duration:</label><br>
+        <input type="range" class="form-range" min="0" value="5" max="20" step="1" id="customRange3">
+      </div>
     </div>
   </div>
 </div>
 <div class="container" style="padding-top: 25px;">
   <div class="row">
     <div class="col-xs-12">
-      <h1 id="title" class="text-center text-danger">Raffle</h1>
+      <h1 id="title" class="text-center text-danger">Change Me</h1>
     </div>
   </div>
   <div class="row">
@@ -90,212 +95,6 @@ ii) To use a different sheet, hover your mouse above (not on) the "Pick Name" bu
     </div>
   </div>
 </div>
-
-<!-- partial -->
-
-<script>
-	//variables
-  	var input = document.getElementById('input');
-	let raffleTitle = document.getElementById('raffle-title');
-	let root = document.documentElement;
-	let btn = document.getElementById('get-data');
-	let reset = document.getElementById('reset');
-	let names = document.getElementById('names');
-	let congrats = document.getElementById('congrats');
-	let form = document.getElementById('file');
-	let winners =[];
-	const exclusions = [];
-	
-//reads file //grabs first sheet // promise of rows
-readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
-		
-		//empty array to put array of rows from excel data
-		let data = [];
-			
-		//empty array of random contestants
-		let players = [];
-	
-		
-		//on click of PICK NAME runs function
-		btn.addEventListener('click', function() {
-		
-			//this counter keeps track of how many rows we have gone through
-			let counter = 0;
-			
-			//sets empty data array to the rows created from promise
-			data = rows;
-			let fileSize = data.length;
-			
-			
-			//a while loop that will keep looping while it's less than the length of the data array
-			while(counter < data.length){
-				
-				//randomly picks 1 person from excel sheet
-				let player = Math.floor(Math.random() * rows.length);
-				
-				//checks to see if player 
-				if(!exclusions.includes(player)){
-				
-				//Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
-				let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
-				
-				//adds the 'person' to the 'players' array above
-				players.push(person);
-				
-				//adds the index of the player to the exclusions array
-          		exclusions.push(player);
-
-				//adds 1 to the counter above
-				counter++;
-				
-			}
-		};
-			//uncomment below to see each 'players' array created
-			//console.log(players)
-			
-			//loops through the 'players', adds an LI element with the name of the 'person'
-			for(let i = 0; i < players.length; i++){
-				let li=document.createElement('li');
-				names.appendChild(li);
-				li.innerHTML=players[i][0];
-			};
-			//adds the 'list' class to the UL element to start the scroll animation
-			names.classList.add('list');
-			
-			//changes the transform property based on the length of the excel sheet
-			try{
-			root.style.setProperty('--doc-length', ((-100 / fileSize) * (fileSize - 1) + '%'));
-			}catch(e){
-				console.error(e instanceof SyntaxError);
-		  		console.error(e.message);
-  				console.error(e.name);
-  				console.error(e.fileName);
-  				console.error(e.lineNumber);
-  				console.error(e.columnNumber);
-  				console.error(e.stack);
-			};
-			
-			//adds the celebrate class to the "congrats" element
-			congrats.classList.add('celebrate');
-			
-			//logs the last 'person' to the console, aka. The Winner and their email
-			console.log(players[players.length-1]);
-			
-			//creates adate based on the computers date and time
-			const time = new Date();
-			let now = time.toLocaleString();
-			
-			//creates key/value pair of the winner into the local storage with the date as the key and winner name as the value
-			localStorage.setItem(now,players[players.length-1]);
-			
-			//creates a "winner" object with "date","name","contact"
-			let winner = {
-				date: now,
-				name: players[players.length-1][0],
-				contact: players[players.length-1][1]
-			};
-			
-			
-//			//adds "winner" object to GLOBAL "winners" array up top
-//			winners.push(winner);
-//			
-			// checks to see if localstorage has a list of winners (names) already
-			//updates the localstorage key(names) with the updated "winners" array (adds redundancy)
-			if(localStorage.getItem('names') === null){
-				
-			// if 'names' key DOES NOT exist,	
-			//adds "winner" object to GLOBAL "winners" array up top
-			winners.push(winner);
-			
-			// creates 'names' key/value pair with the winners array
-			localStorage.setItem('names', JSON.stringify(winners));
-				
-			}else{
-			
-			//if 'names' key DOES EXIST, then the 'winners' array will be set to the current list in localstorage
-			winners = JSON.parse(localStorage.getItem('names'));
-			
-			//adds "winner" object to GLOBAL "winners" array up top
-			winners.push(winner);
-			
-			//sets the 'names' value to the updated 'winners' array	
-			localStorage.setItem('names', JSON.stringify(winners));
-			};
-			
-								 
-    });
-		//resets the raffle game
-		reset.addEventListener('click', function(){
-
-			//deletes all LI elements
-			names.innerHTML = '';
-			
-			//empties the 'players' array
-			players.length = 0;
-			exclusions.length = 0;
-			
-			//removes the animation class from th UL element
-			names.classList.remove('list');
-			congrats.classList.remove('celebrate');
-			
-			//creates an empty LI element in the UL element(makes the animation look cleaner)
-			let li=document.createElement('li');
-			names.appendChild(li);
-	});
-  });
-	
-//clears browser of localstorage of winners
-function clearLocalStorage(){
-	localStorage.clear();
-	
-	//sets global 'winners' array to 0
-	winners.length = 0;
-};
-	
-//creates excel file of winners in localstorage and auto-downloads to computer
-function exportPage(){
-	const results = JSON.parse(localStorage.names);
-	const schema = [
-  {
-    column: 'Date/Time',
-    type: String,
-    value: results => results.date
-  },
-  {
-    column: 'Winner',
-    type: String,
-    value: results => results.name
-  },
-  {
-    column: 'Ticket/Email',
-    type: String,
-    value: results => results.contact
-  }
-];
-writeXlsxFile(results,{ schema, 
-    fileName: 'raffleWinners.xlsx'
-  })
-};
-function swapClass(){
-	let panel = document.getElementById('panel-body');
-	if(!panel.classList.contains('slide-in') && !panel.classList.contains('slide-out')){
-		panel.classList.add('slide-in');
-	}else{
-	panel.classList.toggle('slide-out');
-	panel.classList.toggle('slide-in');
-	
-	}
-};
-
-//changes the text above the selector box after each press of a key //text will be automatically capitalized
-raffleTitle.addEventListener('keyup', () =>{
-	let subject = document.getElementById('title');
-	subject.textContent = raffleTitle.value;
-		//console.log(raffleTitle.value);
-	});
-
-	
-//  	
-</script>
+<script src="/index.js"></script>
 </body>
 </html>
