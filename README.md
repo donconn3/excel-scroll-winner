@@ -29,6 +29,7 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
 <li>The program has worked with over 28,000 rows with 2 columns & over 14,000 rows with 3 columns
   </ol>
   <h4>Operation:</h4>
+  <ol>
 <li>Upload your file
 <li>Click "Pick Name" (winner is the last person in the 'players' array created below. Winner(s) is logged to the console and in localStorage)
 <li>Once the names stop scrolling, you will have your winner and "Congratualtions" will appear
@@ -37,8 +38,10 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
 <li>This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s),(phone, email, raffle #, ticket #, etc.) of winner(s) 
 <li>i) DO NOT CLICK "CLEAR LOCAL STORAGE" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!</strong>
 <li>ii) To start a new drawing with a new list, Complete Step 5, then hit click "Clear Local Storage", and then repeat from Step 1
+  </ol>
 
   <h4>How it Works:</h4>
+  <ol>
 <li>The "readexcelfile" reads each row making an array-of-arrays (sheet = main array, each row = sub-array)
 <li>A "player" is created and assigned a random number which indicates their index position in the array
 <li>While the "counter" is less than the number of rows (numOfROws - 1), 
@@ -49,4 +52,5 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
 <li> Once the "players" array is finished, a for-loop creates a <li> tag for each "person"
 <li>When the "Pick Name" button is clicked, the list of names is scrolled until the "winner" (last <li> tag) appears
 <li> When the "New Drawing" button is clicked, the "players" and  "exclusions" arrays are emptied, and the internal "counter" is reset to 0
+  </ol>
 
