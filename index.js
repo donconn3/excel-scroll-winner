@@ -36,14 +36,14 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         
         //sets empty data array to the rows created from promise
         data = rows;
-        let fileSize = data.length;
+        let fileSize = data.length - 1;
         
         
         //a while loop that will keep looping while it's less than the length of the data array
-        while(counter < data.length){
+        while(counter < fileSize){
             
             //randomly picks 1 person from excel sheet
-            let player = Math.floor(Math.random() * rows.length);
+            let player = Math.floor(Math.random() * fileSize);
             
             //checks to see if player 
             if(!exclusions.includes(player)){
