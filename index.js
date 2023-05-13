@@ -13,11 +13,7 @@ let duration = document.getElementById('duration');
 let winners =[];
 const exclusions = [];
 
-input.addEventListener('change', ()=>{
-location.reload();
-
-});
-
+function pickName(){
 //reads file //grabs first sheet // promise of rows
 readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     
@@ -154,6 +150,7 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         names.appendChild(li);
 });
 });
+};
 
 //clears browser of localstorage of winners
 function clearLocalStorage(){
