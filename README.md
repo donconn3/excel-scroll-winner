@@ -1,6 +1,6 @@
 # excel-scroll-winner
 
-# Vertically-scrolling Text
+# Vertically-scrolling Text (Compatible with Firefox and Chrome (kind-of))
 
 A Pen created on CodePen.io. Original URL: [https://codepen.io/donconn3/pen/ZEqXKEJ](https://codepen.io/donconn3/pen/ZEqXKEJ).
 
