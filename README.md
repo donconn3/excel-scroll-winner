@@ -29,10 +29,12 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
   </ol>
   <h4>Operation:</h4>
   <ol>
-<li>Upload your file
+<li>Upload your file (page will reload)
+  <li>Change the name of the raffle and the duration</li>
+    <li>Click the checkbox if you want to exclude winners from each drawing or keep them in each time</li>
 <li>Click "Pick Name" (winner is the last person in the 'players' array created below. Winner(s) is logged to the console and in localStorage)
 <li>Once the names stop scrolling, you will have your winner and "Congratualtions" will appear
-<li>To draw another name, click "New Drawing" and then repeat Step 2
+<li>To draw another name, click "New Drawing" and then repeat Step 4
 <li>To download the Winner information, click hamburger icon and then click "Download Winners".
 <li>This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s),(phone, email, raffle #, ticket #, etc.) of winner(s) 
 <li>i) DO NOT CLICK "CLEAR LOCAL STORAGE" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!</strong>

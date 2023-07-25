@@ -10,10 +10,21 @@ let form = document.getElementById('file');
 let subject = document.getElementById('title');
 let sliderValue = document.getElementById('customRange3')
 let duration = document.getElementById('duration');
+
+//this array keeps track of all winners - regardless if they are excluded - and saves them to local storage
 let winners =[];
+
+//this array keeps track of winners if they need to be excluded from each drawing
+const winnerId = [];
+
+//this array keeps track of of players that have already been randomly selected so they do not get picked again
 const exclusions = [];
 
-function pickName(){
+input.addEventListener('change', ()=>{
+location.reload();
+
+});
+
 //reads file //grabs first sheet // promise of rows
 readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     
@@ -26,23 +37,32 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     
     //on click of PICK NAME runs function
     btn.addEventListener('click', function() {
+        
+        if(names.children.length > 1){
+            return;
+        }else{
     
         //this counter keeps track of how many rows we have gone through
         let counter = 0;
         
         //sets empty data array to the rows created from promise
         data = rows;
-        let fileSize = data.length - 1;
+        let fileSize = data.length;
         
         
         //a while loop that will keep looping while it's less than the length of the data array
-        while(counter < fileSize){
+        while(counter < fileSize - winnerId.length){
             
             //randomly picks 1 person from excel sheet
             let player = Math.floor(Math.random() * fileSize);
-            
-            //checks to see if player 
-            if(!exclusions.includes(player)){
+
+            //checks to see if the email/ticket number matches those from previous winners 
+            //only matters if you want to exclude previous winners
+            if(winnerId.includes(data[player][2])){
+             
+            continue;
+            //checks to see if the player has already been picked
+            }if(!exclusions.includes(player)){
             
             //Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
             let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
@@ -56,7 +76,8 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
             //adds 1 to the counter above
             counter++;
             
-        }
+         }
+        
     };
         //uncomment below to see each 'players' array created
         //console.log(players)
@@ -87,7 +108,8 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         congrats.classList.add('celebrate');
         
         //logs the last 'person' to the console, aka. The Winner and their email
-        console.log(players[players.length-1]);
+         console.log(players[players.length-1]);
+      
         
         //creates adate based on the computers date and time
         const time = new Date();
@@ -103,7 +125,6 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
             contact: players[players.length-1][1]
         };
         
-        
 //			//adds "winner" object to GLOBAL "winners" array up top
 //			winners.push(winner);
 //			
@@ -114,9 +135,10 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         //if 'names' key DOES EXIST, then the 'winners' array will be set to the current list in localstorage
         winners = JSON.parse(localStorage.getItem('names'));
         
-        //adds "winner" object to GLOBAL "winners" array up top
+        //adds "winner" object to GLOBAL "winners" array up top and the winner exclusion list
         winners.push(winner);
-        
+        winnerId.push(winner.contact);
+       
         //sets the 'names' value to the updated 'winners' array	
         localStorage.setItem('names', JSON.stringify(winners));
             
@@ -124,12 +146,14 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
             
             //adds "winner" object to GLOBAL "winners" array up top
         winners.push(winner);
+        winnerId.push(winner.contact);
+     
         
         //sets the 'names' value to the updated 'winners' array	
         localStorage.setItem('names', JSON.stringify(winners));
         };
         
-                             
+    }                       
 });
     //resets the raffle game
     reset.addEventListener('click', function(){
@@ -140,6 +164,11 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         //empties the 'players' array
         players.length = 0;
         exclusions.length = 0;
+
+        //if the box is not checked, it empties the winner(s) to exclude from each new drawing
+        if(!flexCheckDefault.checked){
+            winnerId.length = 0;
+        }
         
         //removes the animation class from th UL element
         names.classList.remove('list');
@@ -150,7 +179,6 @@ readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
         names.appendChild(li);
 });
 });
-};
 
 //clears browser of localstorage of winners
 function clearLocalStorage(){
@@ -158,6 +186,7 @@ localStorage.clear();
 
 //sets global 'winners' array to 0
 winners.length = 0;
+winnerId.length = 0;
 };
 
 //creates excel file of winners in localstorage and auto-downloads to computer
@@ -218,7 +247,4 @@ sliderValue.oninput = function() {
           console.error(e.columnNumber);
           console.error(e.stack);
     };
-}
-
-
-//  	
+};
