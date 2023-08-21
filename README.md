@@ -1,7 +1,7 @@
 # excel-scroll-winner
-Link to the working version <a href="https://raffle-spinner.000webhostapp.com/><strong>Raffle Spinner Link</strong> (firefox only)</a>
+Link to the working version https://raffle-spinner.000webhostapp.com (Firefox only)
 
-# Vertically-scrolling Text (Compatible with Firefox and Chrome (kind-of))
+# Vertically-scrolling Text (Compatible with Firefox Only for now)
 
 A Pen created on CodePen.io. Original URL: [https://codepen.io/donconn3/pen/ZEqXKEJ](https://codepen.io/donconn3/pen/ZEqXKEJ).
 
