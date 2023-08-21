@@ -1,4 +1,5 @@
 # excel-scroll-winner
+Link to the working version <a href="https://raffle-spinner.000webhostapp.com/><strong>Raffle Spinner Link</strong> (firefox only)</a>
 
 # Vertically-scrolling Text (Compatible with Firefox and Chrome (kind-of))
 
