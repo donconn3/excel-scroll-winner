@@ -1,5 +1,6 @@
 # excel-scroll-winner
-Link to the working version https://raffle-spinner.000webhostapp.com (Firefox only)
+Link to the working version [Raffle Spinner Link](https://raffle-spinner.000webhostapp.com) (Firefox only)
+Test data is available to download in the project folder.
 
 # Vertically-scrolling Text (Compatible with Firefox Only for now)
 
