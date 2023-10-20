@@ -1,0 +1,224 @@
+:root{
+	--doc-length: -99%;
+  --slider-value: 5s;
+  --grad2-value: #6a85b6;
+  --grad3-value: #bac8e0;
+  --grad-xAxis: ;
+  --grad-yAxis: top;
+  --grad-values:linear-gradient(to var(--grad-direction),var(--grad2-value) 0%, var(--grad3-value) 100%);
+  --img-value: url(https://placehold.co/1536x864?text=Hello+World;)
+
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  display: flex;
+/*  font-size: 18px;*/
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+	background-image: linear-gradient(to var(--grad-yAxis) var(--grad-xAxis) , var(--grad2-value) 0%, var(--grad3-value) 100%);
+}
+
+#grad1 {
+  height: 200px;
+  /* background-color: red; /* For browsers that do not support gradients */
+  background-position: center;
+  background-repeat: no-repeat; 
+  background-size: cover;
+}
+#congrats{
+	font-size: 80px;
+	border-radius: 25px;
+	opacity: 0;
+}
+
+.celebrate{
+	opacity: 0;
+	animation-name: fadeIn;
+	animation-delay: calc(var(--slider-value) + 1s);
+	animation-duration: 1s;
+	animation-fill-mode: forwards
+}
+.container{
+	margin-top: 10%;
+}
+.hideElement{
+	opacity: 0;
+}
+.hideElement:hover{
+	opacity:1;
+}
+
+.no-padding{
+	padding: 0px;
+}    
+
+.box {
+  height: 140px;
+	width: 100%;
+  margin: auto;
+  overflow: hidden;
+  position:relative;
+  border: solid 5px black;
+
+}
+.box::before {
+  top: 380px;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  content: "";
+  height:40px;
+  position: absolute;
+  background: linear-gradient(180deg, white, rgba(255, 255, 255, 0));
+}
+.box::after {
+  left: 0;
+  bottom: 370px;
+  z-index: 1;
+  width: 100%;
+  content: "";
+  height: 60px;
+  position: absolute;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), white);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+	
+/*the second value is the duration in seconds of the scroll animation*/
+  -webkit-animation: scrollUp var(--slider-value) 0.16s forwards;
+          animation: scrollUp var(--slider-value) 0.16s forwards;
+}
+ul li {
+  opacity: 1;
+  height: 120px;
+  padding: 10px;
+  list-style: none;
+  font-size: 80px;
+	text-justify: auto;
+	text-align: center;
+  margin-left: -40px;
+}
+
+
+@media screen and (max-width: 768px){
+	#congrats{
+		font-size: 50px;
+	}
+	
+	.box{
+		height: 100px;
+	}
+	
+	ul li{
+		font-size: 45px;
+	}
+}
+@media screen and (max-width: 992px){
+	#congrats{
+		font-size: 60px;
+	}
+	
+	.box{
+		height: 100px;
+	}
+	
+	ul li{
+		font-size: 50px;
+	}
+}
+@media screen and (max-width: 1200px){
+	#congrats{
+		font-size: 60px;
+		width: 80%;
+		text-justify: auto;
+	text-align: center;
+	}
+	
+	.box{
+		height: 100px;
+		width: 80%;
+	}
+	
+	ul li{
+		font-size: 60px;
+	}
+}
+@keyframes fadeIn{
+	from{
+		opacity: 0;
+	}
+	to{
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+@-webkit-keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+	
+/*changing the translateY value here helps line-up the winner with the box.*/ 
+/*Small lists - less decimals. Large lists (thousands) - more decimals*/
+/*formula for TranlateY = (-100% / #of-rows in excel file) x (#of-rows in excel file - 1) this gets it centered*/
+	to {
+    transform: translateY(var(--doc-length));
+  }
+}
+@keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+	
+/*changing the translateY value here helps line-up the winner with the box.*/ 
+/*Small lists - less decimals. Large lists (thousands) - more decimals*/
+  to {
+    transform: translateY(var(--doc-length));
+  }
+}
+
+@keyframes slide-in {
+	0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
+ 
+}
+
+@-webkit-keyframes slide-in {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
+}
+    
+@keyframes slide-out {
+    0% { transform: translateY(0%); }
+    100% { transform: translateY(-100%); }
+}
+
+@-webkit-keyframes slide-out {
+    0% { -webkit-transform: translateY(0%); }
+    100% { -webkit-transform: translateY(-100%); }
+}

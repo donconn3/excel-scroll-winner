@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Raffle Machine Beta</title>
+  <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+  <script src="https://unpkg.com/write-excel-file@1.x/bundle/write-excel-file.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="./raffle-style-beta.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!--How to use the page:
+File Format:
+1) The file format must be .xls or .xlsx
+2) ONLY Column 1 and Column 2 of the excel sheet is displayed (firstName lastName) but column 3 is also read
+3) Empty Cells throw an error so make sure Col 1, Col 2, and Col 3 are all filled
+4) Col 3 can be any information you want (phone, email, raffle #, ticket #, etc.)
+i) The program has worked with over 28,000 rows with 2 columns & over 14,000 rows with 3 columns
+
+Operation:
+1) Upload your file
+2) Click "Pick Name" (winner is the last person in the 'players' array created below. Winner(s) is logged to the console and in localStorage)
+3) Once the names stop scrolling, you will have your winner and "Congratualtions" will appear
+4) To draw another name, click "New Drawing" and then repeat Step 2
+5.0) To download the Winner information, click hamburger icon and then click "Download Winners".
+5.1) This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s),(phone, email, raffle #, ticket #, etc.) of winner(s) 
+i) DO NOT CLICK "CLEAR LOCAL STORAGE" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!
+ii) To start a new drawing with a new list, Complete Step 5, then hit click "Clear Local Storage", and then repeat from Step 1
+
+How it Works:
+1) The "readexcelfile" reads each row making an array-of-arrays (sheet = main array, each row = sub-array)
+2) A "player" is created and assigned a random number which indicates their index position in the array
+3.0) While the "counter" is less than the number of rows (numOfROws - 1), 
+    the "player" is checked against an exclusion array that checks to see if that "player" has been picked already
+3.1) If the "player" has been picked, then the loop restarts
+3.2) If the "player" has NOT been picked, then a "person" is created using the "player" index 
+    and added to the "players" array and the "counter" goes up by 1
+4) Once the "players" array is finished, a for-loop creates a <li> tag for each "person"
+5) When the "Pick Name" button is clicked, the list of names is scrolled until the "winner" (last <li> tag) appears
+6) When the "New Drawing" button is clicked, the "players" and  "exclusions" arrays are emptied, and the internal "counter" is reset to 0
+-->
+</head>
+
+<body id="grad1">
+  <div>
+    <button class="btn btn-light btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+      aria-controls="offcanvasScrolling"><i class="bi bi-list"></i></button>
+  </div>
+  <div class="offcanvas offcanvas-start bg-body-tertiary" data-bs-scroll="true" data-bs-backdrop="false" tabindex="0"
+    id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Settings</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!--UPLOAD File-->
+      <div id="file" class="card form-group bg-body-secondary mb-2">
+        <div class="card-body">
+          <label class="form-label" for="input">
+            <h6>Choose file</h6>
+          </label>
+          <input type="file" class="form-control" id="input" width="10">
+        </div>
+      </div>
+      <!--RAFFLE Title-->
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label" for="input">Raffle Title</label><br>
+            <input placeholder="Enter Title Here" type="text" id="raffle-title">
+          </div>
+          <!--RAFFLE Duration-->
+          <div class="form-group my-2">
+            <label id="duration" class="form-label" for="input">Duration:</label><br>
+            <input type="range" class="form-range" min="0" value="5" max="30" step="1" id="customRange3">
+          </div>
+          <!--EXCLUDE Winners-->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+              Exclude previous winners?
+            </label>
+          </div>
+        </div>
+      </div>
+<!--RAFFLE Background-->
+      <div class="card my-2">
+        <div class="card-body">
+          <div class="form-group">
+            <!--Background Type-->
+            <label class="form-label" for="input">Page Background</label><br>
+            <select id="bg-select" class="form-select" aria-label="Default select example">
+              <option value="default" selected>Select Background</option>
+              <option value="gradient">Gradient</option>
+              <option value="image">Image</option>
+            </select>
+            <!--Gradient Choice-->
+            <div id="gradient" class="d-flex w-100 justify-content-evenly my-2 visually-hidden" aria-hidden="true">
+              <!--Gradient Direction-->
+              <div id="top-bottom">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="yAxisRadios" id="yRadio" value="top" checked>
+                  <label class="form-check-label text-capitalize" for="yRadio">
+                    Default
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="yAxisRadios" id="topRadio" value="top">
+                  <label class="form-check-label text-capitalize" for="topRadio">
+                    Top
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="yAxisRadios" id="bottomRadio" value="bottom">
+                  <label class="form-check-label text-capitalize" for="bottomRadio">
+                    Bottom
+                  </label>
+                </div>
+              </div>
+              <div id="left-right">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="xAxisRadios" id="xRadio" value="" checked>
+                  <label class="form-check-label text-capitalize" for="xRadio">
+                    Default
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="xAxisRadios" id="leftRadio" value="left">
+                  <label class="form-check-label text-capitalize" for="leftRadio">
+                    Left
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="xAxisRadios" id="rightRadio" value="right">
+                  <label class="form-check-label text-capitalize" for="rightRadio">
+                    Right
+                  </label>
+                </div>
+              </div>
+              <!--Gradient Colors-->
+              <div>
+                <label for="Gradient 1" class="form-label text-capitalize">Color 1</label>
+              <input type="color" class="form-control form-control-color" id="grad2" value="#6a85b6" title="Gradient 1">
+              </div>
+              <div>
+                <label for="Gradient 2" class="form-label text-capitalize">Color 2</label>
+                <input type="color" class="form-control form-control-color" id="grad3" value="#bac8e0" title="Gradient 2">
+              </div>
+            </div>
+            <!--Image Choice-->
+            <div id="img-input" class="visually-hidden text-center">
+              <input id="img-upload" type="file" class="form-control my-2" width="10" aria-hidden="true">
+              <p class="text-lowercase">or</p>
+              <input id="img-link" type="url" class="form-control my-2" placeholder="Paste Link"  width="10" aria-hidden="true">
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="d-inline-block w-100 my-2">
+        <!--DOWNLOAD Local Storage-->
+        <div class="download float-start">
+          <button type="button" class="btn btn-info text-center" aria-label="Left Align" onclick="exportPage()"> <span
+              class="glyphicon glyphicon-download-alt" aria-hidden="true"></span><i
+              class="bi bi-file-earmark-arrow-down"></i> Download Winners</button>
+        </div>
+        <!--DELETE Local Storage-->
+        <div class="trash float-end">
+          <button type="button" class="btn btn-danger" aria-label="Left Align" onclick="clearLocalStorage()"> <span
+              class="glyphicon glyphicon-trash" aria-hidden="true"></span><i class="bi bi-trash3"></i> Delete
+            Drawing</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Raffle Main-->
+  <div class="container" style="padding-top: 25px;">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 id="title" class="text-center text-danger">Change Me</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box bg-primary-subtle">
+          <ul id="names" class="">
+            <li></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="message">
+          <h1 id="congrats" class="text-center bg-success">Congratulations!</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 no-padding">
+        <button id="get-data" type="button" class="btn btn-success"><span class="glyphicon glyphicon-hand-up"
+            aria-hidden="true"></span> PICK NAME </button>
+        <button id="reset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-repeat"
+            aria-hidden="true"></span> NEW DRAWING </button>
+      </div>
+    </div>
+  </div>
+  <script src="/raffle-beta.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
