@@ -2,7 +2,7 @@
 Link to the working version [Raffle Spinner Link](https://raffle-spinner.000webhostapp.com) (Firefox only)
 Test data is available to download in the project folder.
 
-# Vertically-scrolling Text (Compatible with Firefox Only for now)
+# Vertically-scrolling Text (Compatible with Firefox for now)
 
 A Pen created on CodePen.io. Original URL: [https://codepen.io/donconn3/pen/ZEqXKEJ](https://codepen.io/donconn3/pen/ZEqXKEJ).
 
