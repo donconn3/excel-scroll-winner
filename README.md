@@ -1,8 +1,10 @@
 # excel-scroll-winner
-Link to the working version [Raffle Spinner Link](https://raffle-spinner.000webhostapp.com) (Firefox only)
+Link to the working version [Raffle Spinner Link](https://raffle-spinner.000webhostapp.com) 
+Firefox works best for all data set sizes and duration.
+Chrome has issues animating names with large sets (1500+ rows) and short duration (8 seconds or less). Increase duration to proper animation.
 Test data is available to download in the project folder.
 
-# Vertically-scrolling Text (Compatible with Firefox for now)
+# Vertically-scrolling Text
 
 A Pen created on CodePen.io. Original URL: [https://codepen.io/donconn3/pen/ZEqXKEJ](https://codepen.io/donconn3/pen/ZEqXKEJ).
 
@@ -39,16 +41,16 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
 <li>To draw another name, click "New Drawing" and then repeat Step 4
 <li>To download the Winner information, click hamburger icon and then click "Download Winners".
 <li>This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s),(phone, email, raffle #, ticket #, etc.) of winner(s) 
-<li>i) DO NOT CLICK "CLEAR LOCAL STORAGE" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!</strong>
-<li>ii) To start a new drawing with a new list, Complete Step 5, then hit click "Clear Local Storage", and then repeat from Step 1
+<li>i) DO NOT CLICK "DELETE DRAWING" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!</strong>
+<li>ii) To start a new drawing with a new list, Complete Step 5, then hit click "Delete Drawing", and then repeat from Step 1
   </ol>
 
   <h4>How it Works:</h4>
   <ol>
 <li>The "readexcelfile" reads each row making an array-of-arrays (sheet = main array, each row = sub-array)
 <li>A "player" is created and assigned a random number which indicates their index position in the array
-<li>While the "counter" is less than the number of rows (numOfROws - 1), 
-    the "player" is checked against an exclusion array that checks to see if that "player" has been picked already
+<li>While the "counter" is less than the number of rows, 
+    the new "player" is checked against an exclusion array that checks to see if the new "player" has been picked already
 <li>If the "player" has been picked, then the loop restarts
 <li>If the "player" has NOT been picked, then a "person" is created using the "player" index 
     and added to the "players" array and the "counter" goes up by 1
@@ -56,4 +58,12 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vani
 <li>When the "Pick Name" button is clicked, the list of names is scrolled until the "winner" (last <li> tag) appears
 <li> When the "New Drawing" button is clicked, the "players" and  "exclusions" arrays are emptied, and the internal "counter" is reset to 0
   </ol>
-
+  
+<h4>Future Updates</h4>
+<ul>
+  <li>add carusel of images to show potential prizes</li>
+  <li>select which columns to read from</li>
+  <li>write in names instead of uploading a file</li>
+  <li>download winners as a pdf/.doc as wells as spreadsheet</li>
+  <li>Far down the road: profiles/layouts, more control over text/font/colors</li>
+</ul>
