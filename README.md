@@ -6,6 +6,7 @@ Firefox works best for all data set sizes and duration.
 Chrome has issues animating names with large sets (1500+ rows) and short duration (8 seconds or less). Increase duration for proper animation.
 
 Test data is available to download in the project folder.
+Text/image safezones for a custom background are also in the folder as well as the photoshop file. (1920x1080)
 
 # Vertically-scrolling Text
 
