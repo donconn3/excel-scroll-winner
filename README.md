@@ -15,12 +15,13 @@ Vertiaclly-scrolling list that has the appearance of fading in and out.
 
 The source for the animation was from a PEN on CodePen(wish I could find it again).
 
-Uses read-excel-file.js, write-excel-file.js, Boostrap 3; written mostly in vanilla JS, HTML, and CSS. 
+Uses read-excel-file.js, write-excel-file.js, Boostrap 5.3; written mostly in vanilla JS, HTML, and CSS. 
 <h3>(tl;dr)Basic steps:</h3>
 <ol>
   <li>Upload an excel file</li>
- <li>Change Title</li>
+ <li>Add Title</li>
  <li>Set raffle duration</li>
+ <li>Change background/gradient</li>
  <li>Pick name</li>
  <li>Download Winner(s) </li>
 </ol>
