@@ -1,4 +1,7 @@
 //variables
+window.onload = () =>{
+    setDefaults();
+}
 const input = document.getElementById('input');
 let raffleTitle = document.getElementById('raffle-title');
 const sheet1= document.styleSheets[1];
@@ -8,6 +11,8 @@ let btn = document.getElementById('get-data');
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
 let congrats = document.getElementById('congrats');
+let confetti = document.getElementById('confetti');
+let confettiImg = document.getElementById('confettiImg');
 let form = document.getElementById('file');
 let subject = document.getElementById('title');
 let sliderValue = document.getElementById('customRange3')
@@ -27,8 +32,14 @@ let data = [];
 
 //empty array of random contestants
 let players = [];
-
-input.addEventListener('change', ()=>{
+function validateFile(){
+    let ele = input.value.split(".");
+    console.log(ele)
+    // Allowing file type
+if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
+alert('Invalid file type');
+input.value = '';
+}else{
     //reads file //grabs first sheet // promise of rows
     readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
@@ -36,7 +47,13 @@ input.addEventListener('change', ()=>{
         sessionStorage.setItem('sheet',JSON.stringify(data));
         }
     );
-});
+}
+}
+
+// input.addEventListener('change', ()=>{
+    
+   
+// });
 
 //on click of PICK NAME runs function
 btn.addEventListener('click', function() {
@@ -115,11 +132,20 @@ btn.addEventListener('click', function() {
               console.error(e.lineNumber);
               console.error(e.columnNumber);
               console.error(e.stack);
-              alert(e + ": That's not a good error. There's an issue with the document length. Take a look and then reupload.")
+              alert(e + ": That's not a good error. There might not be enough rows. Take a look and then reupload.")
         };
         
         //adds the celebrate class to the "congrats" element
         congrats.classList.add('celebrate');
+        setTimeout(function(){
+            confettiImg.src = "/confetti.gif";
+            confetti.classList.add('end-celebrate');
+            setTimeout(function(){
+                confettiImg.src = "";
+                confetti.classList.remove('end-celebrate');
+            },5000)
+        }, (Number(sliderValue.value) + 1) * 1000);
+        
         
         //logs the last 'person' to the console, aka. The Winner and their email
          console.log(players[players.length-1]);
@@ -141,7 +167,7 @@ btn.addEventListener('click', function() {
         
 //			//adds "winner" object to GLOBAL "winners" array up top
 //			winners.push(winner);
-//			
+//
         // checks to see if localstorage has a list of winners (names) already
         //updates the localstorage key(names) with the updated "winners" array (adds redundancy)
         if(localStorage.getItem('names') !== null && winners.length === 0){
@@ -167,10 +193,11 @@ btn.addEventListener('click', function() {
         localStorage.setItem('names', JSON.stringify(winners));
         };
         
-    }                       
+    }
 });
-    //resets the raffle game
-    reset.addEventListener('click', function(){
+
+//resets the raffle game
+reset.addEventListener('click', function(){
 
         //deletes all LI elements
         names.innerHTML = '';
@@ -226,20 +253,21 @@ writeXlsxFile(results,{ schema,
 fileName: 'raffleWinners.xlsx'
 })
 };
-function swapClass(){
-let panel = document.getElementById('panel-body');
-if(!panel.classList.contains('slide-in') && !panel.classList.contains('slide-out')){
-    panel.classList.add('slide-in');
-}else{
-panel.classList.toggle('slide-out');
-panel.classList.toggle('slide-in');
+// function swapClass(){
+// let panel = document.getElementById('panel-body');
+// if(!panel.classList.contains('slide-in') && !panel.classList.contains('slide-out')){
+//     panel.classList.add('slide-in');
+// }else{
+// panel.classList.toggle('slide-out');
+// panel.classList.toggle('slide-in');
 
-}
-};
+// }
+// };
 
 //changes the text above the selector box after each press of a key //text will be automatically capitalized
 raffleTitle.addEventListener('keyup', () =>{
 subject.textContent = raffleTitle.value;
+sessionStorage.setItem('title', raffleTitle.value);
 });
 
 //shows the animation duration for from the slider
@@ -273,6 +301,28 @@ let xDir = document.getElementById('left-right');
 let yDir = document.getElementById('top-bottom');
 let xAxisArr = document.getElementsByName('xAxisRadios');
 let yAxisArr = document.getElementsByName('yAxisRadios');
+let congratsBox = document.getElementById('congratsBox');
+let congratsBlock = document.getElementById('hide-congrats');
+function setDefaults(){
+    if(sessionStorage.getItem('title') !== null){
+        subject.textContent = sessionStorage.getItem('title');
+    }
+    sliderValue.value = 5;
+    duration.innerHTML = "Duration: " + sliderValue.value + " seconds";
+    bgSelector.value = "default";
+    imgLink.value = "";
+    imgUpload.value="";
+    grad2.value = `#6a85b6`;
+    grad3.value = `#bac8e0`;
+    congratsBox.checked = true;
+    hideCongrats();
+
+}
+function hideCongrats(){
+    (congratsBox.checked)?congratsBlock.classList.add("visually-hidden"):congratsBlock.classList.remove("visually-hidden");
+    console.log("foo")
+}
+
 bgSelector.oninput = ()=>{
     try{
         if(bgSelector.value === "gradient"){
@@ -280,7 +330,11 @@ bgSelector.oninput = ()=>{
             imgBox.classList.add('visually-hidden');
             body.style.removeProperty('background-image');
             root.style.setProperty('--grad2-value', grad2.value)
-            
+            let gradientValues = {
+                color1:grad2.value,
+                color2:grad3.value,
+            };
+
             grad2.oninput = ()=>{
                 root.style.setProperty('--grad2-value', grad2.value)
             }
@@ -314,6 +368,7 @@ bgSelector.oninput = ()=>{
             imgUpload.oninput = ()=>{
                 let ele = imgUpload.files[0];
                 let bgImg = URL.createObjectURL(ele);
+                localStorage.setItem('bgImg', JSON.stringify(bgImg));
                 body.style.setProperty('background-image', `url(${bgImg})`)
 
                 console.log(ele, bgImg)
