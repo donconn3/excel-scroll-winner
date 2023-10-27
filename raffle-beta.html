@@ -46,10 +46,14 @@ How it Works:
 -->
 </head>
 
-<body id="grad1">
-  <div>
+<body id="grad1" class="overflow-hidden">
+  
+  <div class="z-2">
     <button class="btn btn-light btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
       aria-controls="offcanvasScrolling"><i class="bi bi-list"></i></button>
+  </div>
+  <div class="position-absolute z-1" id="confetti">
+      <img src="" width="100%" id="confettiImg">
   </div>
   <div class="offcanvas offcanvas-start bg-body-tertiary" data-bs-scroll="true" data-bs-backdrop="false" tabindex="0"
     id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
@@ -64,7 +68,7 @@ How it Works:
           <label class="form-label" for="input">
             <h6>Choose file</h6>
           </label>
-          <input type="file" class="form-control" id="input" width="10">
+          <input type="file" class="form-control" id="input" width="10" onchange="validateFile()">
         </div>
       </div>
       <!--RAFFLE Title-->
@@ -79,11 +83,18 @@ How it Works:
             <label id="duration" class="form-label" for="input">Duration:</label><br>
             <input type="range" class="form-range" min="0" value="5" max="30" step="1" id="customRange3">
           </div>
+          <!--HIDE Congrats Message-->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="congratsBox" onclick="hideCongrats()">
+            <label class="form-check-label" for="congrats-message">
+              Hide "Congratulations" Message
+            </label>
+          </div>
           <!--EXCLUDE Winners-->
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
-              Exclude previous winners?
+              Exclude previous winners
             </label>
           </div>
         </div>
@@ -184,7 +195,7 @@ How it Works:
   <div class="container" style="padding-top: 25px;">
     <div class="row">
       <div class="col-xs-12">
-        <h1 id="title" class="text-center text-danger">Change Me</h1>
+        <h1 id="title" class="text-center text-danger"></h1>
       </div>
     </div>
     <div class="row">
@@ -196,19 +207,17 @@ How it Works:
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="hide-congrats">
       <div class="col-xs-12">
         <div class="message">
-          <h1 id="congrats" class="text-center bg-success">Congratulations!</h1>
+          <h1 id="congrats" class="text-center bg-primary-subtle">Congratulations!</h1>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 no-padding">
-        <button id="get-data" type="button" class="btn btn-success"><span class="glyphicon glyphicon-hand-up"
-            aria-hidden="true"></span> PICK NAME </button>
-        <button id="reset" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-repeat"
-            aria-hidden="true"></span> NEW DRAWING </button>
+    <div class="row pt-2">
+      <div class="col-xs-12 no-padding z-2">
+        <button id="get-data" type="button" class="btn btn-success"><i class="bi bi-hand-index"></i> PICK NAME </button>
+        <button id="reset" type="button" class="btn btn-danger"><i class="bi bi-arrow-clockwise"></i> NEW DRAWING </button>
       </div>
     </div>
   </div>
