@@ -43,8 +43,21 @@ body {
 	animation-duration: 1s;
 	animation-fill-mode: forwards
 }
+.end-celebrate{
+	opacity: 1;
+	animation-name: fadeOut;
+	animation-delay: calc(var(--slider-value));
+	animation-duration: 1s;
+	animation-fill-mode: forwards
+}
+.end-now{
+	animation-name: fadeOut;
+	animation-duration: 1s;
+	animation-fill-mode: forwards
+}
+
 .container{
-	margin-top: 10%;
+	margin-top: 18%;
 }
 .hideElement{
 	opacity: 0;
@@ -187,7 +200,7 @@ ul li {
 /*Small lists - less decimals. Large lists (thousands) - more decimals*/
 /*formula for TranlateY = (-100% / #of-rows in excel file) x (#of-rows in excel file - 1) this gets it centered*/
 	to {
-    transform: translateY(var(--doc-length));
+    transform: translateY(var(--doc-length)px);
   }
 }
 @keyframes scrollUp {
