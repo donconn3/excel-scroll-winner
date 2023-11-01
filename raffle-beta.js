@@ -17,6 +17,7 @@ let form = document.getElementById('file');
 let subject = document.getElementById('title');
 let sliderValue = document.getElementById('customRange3')
 let duration = document.getElementById('duration');
+let excludeWinners = document.getElementById('excludeWinners');
 
 //this array keeps track of all winners - regardless if they are excluded - and saves them to local storage
 let winners =[];
@@ -34,7 +35,7 @@ let data = [];
 let players = [];
 function validateFile(){
     let ele = input.value.split(".");
-    console.log(ele)
+
     // Allowing file type
 if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
 alert('Invalid file type');
@@ -49,11 +50,6 @@ input.value = '';
     );
 }
 }
-
-// input.addEventListener('change', ()=>{
-    
-   
-// });
 
 //on click of PICK NAME runs function
 btn.addEventListener('click', function() {
@@ -137,14 +133,7 @@ btn.addEventListener('click', function() {
         
         //adds the celebrate class to the "congrats" element
         congrats.classList.add('celebrate');
-        setTimeout(function(){
-            confettiImg.src = "/confetti.gif";
-            confetti.classList.add('end-celebrate');
-            setTimeout(function(){
-                confettiImg.src = "";
-                confetti.classList.remove('end-celebrate');
-            },5000)
-        }, (Number(sliderValue.value) + 1) * 1000);
+        confettiTimer();
         
         
         //logs the last 'person' to the console, aka. The Winner and their email
@@ -195,10 +184,19 @@ btn.addEventListener('click', function() {
         
     }
 });
-
+function confettiTimer(){
+    setTimeout(function(){
+        confettiImg.src = "/confetti.gif";
+        confetti.classList.add('end-celebrate');
+        setTimeout(function(){
+            confettiImg.src = "";
+            confetti.classList.remove('end-celebrate');
+        },5400)
+    }, (Number(sliderValue.value) + 0.5) * 1000);
+}
 //resets the raffle game
 reset.addEventListener('click', function(){
-
+        clearTimeout(confettiTimer)
         //deletes all LI elements
         names.innerHTML = '';
         
@@ -207,7 +205,7 @@ reset.addEventListener('click', function(){
         exclusions.length = 0;
 
         //if the box is not checked, it empties the winner(s) to exclude from each new drawing
-        if(!flexCheckDefault.checked){
+        if(!excludeWinners.checked){
             winnerId.length = 0;
         }
         
@@ -216,7 +214,7 @@ reset.addEventListener('click', function(){
         congrats.classList.remove('celebrate');
         
         //creates an empty LI element in the UL element(makes the animation look cleaner)
-        let li=document.createElement('li');
+        let li = document.createElement('li');
         names.appendChild(li);
 });
 
@@ -303,6 +301,10 @@ let xAxisArr = document.getElementsByName('xAxisRadios');
 let yAxisArr = document.getElementsByName('yAxisRadios');
 let congratsBox = document.getElementById('congratsBox');
 let congratsBlock = document.getElementById('hide-congrats');
+let carouselBox = document.getElementById('hideCarousel');
+let carouselBlock = document.querySelector('.carousel');
+let carouselBody = document.querySelector('.carousel-inner');
+let carUpload = document.getElementById('car-upload');
 function setDefaults(){
     if(sessionStorage.getItem('title') !== null){
         subject.textContent = sessionStorage.getItem('title');
@@ -320,7 +322,7 @@ function setDefaults(){
 }
 function hideCongrats(){
     (congratsBox.checked)?congratsBlock.classList.add("visually-hidden"):congratsBlock.classList.remove("visually-hidden");
-    console.log("foo")
+
 }
 
 bgSelector.oninput = ()=>{
@@ -390,13 +392,34 @@ bgSelector.oninput = ()=>{
     };
 };
 
+function buildCarousel(){
+    let carItem = document.querySelector('.firstCar');
+    
+    for(let i = 0; i < carUpload.files.length; i++){
+        let carSrc = URL.createObjectURL(carUpload.files[i]);
+        carouselBody.appendChild(carItem.cloneNode(true));
+        carouselBody.children[i].classList.add('carousel-item');
+        carouselBody.children[i].classList.remove('firstCar', 'visually-hidden');
+        carouselBody.children[i].children[0].src = carSrc;
+        carouselBody.children[i].children[0].alt = carUpload.files[i].name;
+    }
+    carouselBody.firstElementChild.classList.add('active');
+    document.querySelector('.carousel').classList.remove('visually-hidden');
+}
 
-// for (i = 0; i < xAxisArr.length; i++) {
-//     if (xAxisArr[i].checked)
-//         gradDirection += " " + xAxisArr[i]
-// }
-// for (i = 0; i < yAxisArr.length; i++) {
-//     if (yAxisArr[i].checked)
-//         gradDirection += " " + yAxisArr[i]
-// }
-// body.style.setProperty('background-image', `linear-gradient(to ${gradDirection},${grad2.value} 0%, ${grad2.value} 100%);`);
+function hideCarousel(){
+    if(carouselBox.checked){
+        carouselBlock.classList.add("visually-hidden")
+        root.style.setProperty('--box-margin', "18%")
+    }else if(!carouselBox.checked){
+        carouselBlock.classList.remove("visually-hidden")
+        root.style.setProperty('--box-margin', "10%")
+    }
+}
+
+function clearCarousel(){
+    carouselBlock.classList.add("visually-hidden");
+    root.style.setProperty('--box-margin', "18%");
+    carouselBody.innerHTML = "";
+    carUpload.value = "";
+}
