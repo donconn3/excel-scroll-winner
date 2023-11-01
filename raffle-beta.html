@@ -48,8 +48,8 @@ How it Works:
 
 <body id="grad1" class="overflow-hidden">
   
-  <div class="z-2">
-    <button class="btn btn-light btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+  <div class="z-2 p-st">
+    <button class="btn btn-outline-secondary btn-lg position-absolute bottom-0 start-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
       aria-controls="offcanvasScrolling"><i class="bi bi-list"></i></button>
   </div>
   <div class="position-absolute z-1" id="confetti">
@@ -92,8 +92,8 @@ How it Works:
           </div>
           <!--EXCLUDE Winners-->
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
+            <input class="form-check-input" type="checkbox" value="" id="excludeWinners">
+            <label class="form-check-label" for="excludeWinners">
               Exclude previous winners
             </label>
           </div>
@@ -169,8 +169,26 @@ How it Works:
               <p class="text-lowercase">or</p>
               <input id="img-link" type="url" class="form-control my-2" placeholder="Paste Link"  width="10" aria-hidden="true">
             </div>
-            
           </div>
+        </div>
+      </div>
+      <div class="card my-2">
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label" for="car-upload">Carousel Image(s) Upload</label><br>
+      <!--Carousel Upload-->
+      <div id="car-input" class="text-center">
+        <input id="car-upload" type="file" class="form-control my-2" width="10" aria-hidden="true" accept="image/png" multiple oninput="buildCarousel()">
+        </div>
+        <!--Carousel Hide-->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="hideCarousel" onchange="hideCarousel()" checked>
+          <label class="form-check-label" for="hideCarousel">
+            Hide Carousel
+          </label>
+        </div>
+        <button id="clearCarousel" type="button" class="btn btn-warning w-100" onclick="clearCarousel()">Clear Carousel</button>
+        </div>
         </div>
       </div>
       <div class="d-inline-block w-100 my-2">
@@ -192,7 +210,7 @@ How it Works:
   </div>
 
   <!--Raffle Main-->
-  <div class="container" style="padding-top: 25px;">
+  <div class="container" style="padding-top: 25px; ">
     <div class="row">
       <div class="col-xs-12">
         <h1 id="title" class="text-center text-danger"></h1>
@@ -218,6 +236,24 @@ How it Works:
       <div class="col-xs-12 no-padding z-2">
         <button id="get-data" type="button" class="btn btn-success"><i class="bi bi-hand-index"></i> PICK NAME </button>
         <button id="reset" type="button" class="btn btn-danger"><i class="bi bi-arrow-clockwise"></i> NEW DRAWING </button>
+      </div>
+    </div>
+    <div class="row w-75 h-auto pt-2 mx-auto">
+      <div id="carouselExample" class="carousel slide carousel-dark visually-hidden">
+        <div class="firstCar visually-hidden">
+            <img src="https://files.constantcontact.com/8a509b6a801/78c34c9b-1e78-4bb2-abe8-1b45f1e7b0cc.png" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-inner">
+          
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>
