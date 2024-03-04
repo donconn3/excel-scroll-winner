@@ -77,7 +77,7 @@ btn.addEventListener('click', function() {
 
             //checks to see if the email/ticket number matches those from previous winners 
             //only matters if you want to exclude previous winners
-            if(winnerId.includes(data[player][2])){
+            if(winnerId.includes(player)){
              
             continue;
             //checks to see if the player has already been picked
@@ -166,7 +166,7 @@ btn.addEventListener('click', function() {
         
         //adds "winner" object to GLOBAL "winners" array up top and the winner exclusion list
         winners.push(winner);
-        winnerId.push(winner.contact);
+        winnerId.push(exclusions[exclusions.length - 1]);
        
         //sets the 'names' value to the updated 'winners' array	
         localStorage.setItem('names', JSON.stringify(winners));
@@ -175,7 +175,7 @@ btn.addEventListener('click', function() {
             
             //adds "winner" object to GLOBAL "winners" array up top
         winners.push(winner);
-        winnerId.push(winner.contact);
+        winnerId.push(exclusions[exclusions.length - 1]);
      
         
         //sets the 'names' value to the updated 'winners' array	
@@ -183,6 +183,7 @@ btn.addEventListener('click', function() {
         };
         
     }
+    console.log(winnerId)
 });
 function confettiTimer(){
     setTimeout(function(){
@@ -207,6 +208,7 @@ reset.addEventListener('click', function(){
         //if the box is not checked, it empties the winner(s) to exclude from each new drawing
         if(!excludeWinners.checked){
             winnerId.length = 0;
+            console.log(winnerId)
         }
         
         //removes the animation class from th UL element
@@ -216,6 +218,7 @@ reset.addEventListener('click', function(){
         //creates an empty LI element in the UL element(makes the animation look cleaner)
         let li = document.createElement('li');
         names.appendChild(li);
+        console.log(winnerId)
 });
 
 //clears browser of localstorage of winners
