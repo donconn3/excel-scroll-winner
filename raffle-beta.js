@@ -132,8 +132,9 @@ btn.addEventListener('click', function() {
         };
         
         //adds the celebrate class to the "congrats" element
+        const confettiBox = document.getElementById("confettiBox");
         congrats.classList.add('celebrate');
-        confettiTimer();
+        (!confettiBox.checked)?confettiTimer():"";
         
         
         //logs the last 'person' to the console, aka. The Winner and their email
@@ -291,23 +292,24 @@ sliderValue.oninput = function() {
     };
 };
 
-let bgSelector = document.getElementById('bg-select');
-let gradBox = document.getElementById('gradient');
-let imgBox = document.getElementById('img-input');
-let imgUpload = document.getElementById('img-upload');
-let imgLink = document.getElementById('img-link');
-let grad2 = document.getElementById('grad2');
-let grad3 = document.getElementById('grad3');
-let xDir = document.getElementById('left-right');
-let yDir = document.getElementById('top-bottom');
-let xAxisArr = document.getElementsByName('xAxisRadios');
-let yAxisArr = document.getElementsByName('yAxisRadios');
-let congratsBox = document.getElementById('congratsBox');
-let congratsBlock = document.getElementById('hide-congrats');
-let carouselBox = document.getElementById('hideCarousel');
-let carouselBlock = document.querySelector('.carousel');
-let carouselBody = document.querySelector('.carousel-inner');
-let carUpload = document.getElementById('car-upload');
+const  bgSelector = document.getElementById('bg-select');
+const  gradBox = document.getElementById('gradient');
+const  imgBox = document.getElementById('img-input');
+const  imgUpload = document.getElementById('img-upload');
+const  imgLink = document.getElementById('img-link');
+const  grad2 = document.getElementById('grad2');
+const  grad3 = document.getElementById('grad3');
+const  xDir = document.getElementById('left-right');
+const  yDir = document.getElementById('top-bottom');
+const  xAxisArr = document.getElementsByName('xAxisRadios');
+const  yAxisArr = document.getElementsByName('yAxisRadios');
+const congratsBox = document.getElementById('congratsBox');
+const congratsBlock = document.getElementById('hide-congrats');
+const confettiBox = document.getElementById("confettiBox");
+const  carouselBox = document.getElementById('hideCarousel');
+const  carouselBlock = document.querySelector('.carousel');
+const carouselBody = document.querySelector('.carousel-inner');
+const carUpload = document.getElementById('car-upload');
 function setDefaults(){
     if(sessionStorage.getItem('title') !== null){
         subject.textContent = sessionStorage.getItem('title');
@@ -320,6 +322,9 @@ function setDefaults(){
     grad2.value = `#6a85b6`;
     grad3.value = `#bac8e0`;
     congratsBox.checked = true;
+    confettiBox.checked = true;
+    carouselBox.checked = true;
+    clearCarousel();
     hideCongrats();
 
 }
@@ -407,7 +412,9 @@ function buildCarousel(){
         carouselBody.children[i].children[0].alt = carUpload.files[i].name;
     }
     carouselBody.firstElementChild.classList.add('active');
-    document.querySelector('.carousel').classList.remove('visually-hidden');
+    //document.querySelector('.carousel').classList.remove('visually-hidden');
+    carouselBox.checked = false;
+    hideCarousel();
 }
 
 function hideCarousel(){
@@ -421,8 +428,8 @@ function hideCarousel(){
 }
 
 function clearCarousel(){
-    carouselBlock.classList.add("visually-hidden");
-    root.style.setProperty('--box-margin', "18%");
+    carouselBox.checked = true;
+    hideCarousel();
     carouselBody.innerHTML = "";
     carUpload.value = "";
 }
