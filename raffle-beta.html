@@ -73,25 +73,25 @@ How it Works:
       <div class="card">
         <div class="card-body">
           <div class="form-group">
-            <label class="form-label" for="input">Raffle Title</label><br>
+            <label class="form-label" for="raffle-title">Raffle Title</label><br>
             <input placeholder="Enter Title Here" type="text" id="raffle-title" />
           </div>
           <!--RAFFLE Duration-->
           <div class="form-group my-2">
-            <label id="duration" class="form-label" for="input">Duration:</label><br>
+            <label id="duration" class="form-label" for="customRange3">Duration:</label><br>
             <input type="range" class="form-range" min="0" value="5" max="30" step="1" id="customRange3" />
           </div>
           <!--HIDE Congrats Message-->
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="congrats-message" id="congratsBox" onclick="hideCongrats()" />
-            <label class="form-check-label" for="congrats-message">
+            <label class="form-check-label" for="congratsBox">
               Hide "Congratulations" Message
             </label>
           </div>
            <!--HIDE Confetti-->
            <div class="form-check">
             <input class="form-check-input" type="checkbox" value="confetti-message" id="confettiBox" checked />
-            <label class="form-check-label" for="confetti-message">
+            <label class="form-check-label" for="confettiBox">
               Hide Confetti
             </label>
           </div>
@@ -160,11 +160,11 @@ How it Works:
               </div>
               <!--Gradient Colors-->
               <div>
-                <label for="Gradient 1" class="form-label text-capitalize">Color 1</label>
+                <label for="grad2" class="form-label text-capitalize">Color 1</label>
               <input type="color" class="form-control form-control-color" id="grad2" value="#6a85b6" title="Gradient 1">
               </div>
               <div>
-                <label for="Gradient 2" class="form-label text-capitalize">Color 2</label>
+                <label for="grad3" class="form-label text-capitalize">Color 2</label>
                 <input type="color" class="form-control form-control-color" id="grad3" value="#bac8e0" title="Gradient 2">
               </div>
             </div>
