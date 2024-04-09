@@ -125,7 +125,9 @@ ul li {
 	text-align: center;
   margin-left: -40px;
 }
-
+#names{
+  will-change:transform;
+}
 
 @media screen and (max-width: 768px){
 	#congrats{
@@ -218,7 +220,7 @@ ul li {
 /*changing the translateY value here helps line-up the winner with the box.*/ 
 /*Small lists - less decimals. Large lists (thousands) - more decimals*/
   to {
-    transform: translateY(var(--doc-length));
+    transform: translateY(var(--doc-length)px);
   }
 }
 
