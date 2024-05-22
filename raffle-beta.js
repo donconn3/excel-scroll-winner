@@ -153,7 +153,7 @@ btn.addEventListener('click', function() {
         let winner = {
             date: now,
             name: players[players.length-1][0],
-            contact: players[players.length-1][1]
+            contact: String(players[players.length-1][1])
         };
         
 //			//adds "winner" object to GLOBAL "winners" array up top
