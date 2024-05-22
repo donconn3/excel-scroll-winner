@@ -10,9 +10,7 @@ let root = document.documentElement;
 let btn = document.getElementById('get-data');
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
-//let congrats = document.getElementById('congrats');
-const congratsBox = document.getElementById('congratsBox');
-const congratsBlock = document.getElementById('hide-congrats');
+let congrats = document.getElementById('congrats');
 let confetti = document.getElementById('confetti');
 let confettiImg = document.getElementById('confettiImg');
 let form = document.getElementById('file');
@@ -118,7 +116,7 @@ btn.addEventListener('click', function() {
             li.innerHTML=players[i][0];
         };
         //adds the 'list' class to the UL element to start the scroll animation
-        //names.classList.add('list');
+        names.classList.add('list');
         
         //changes the transform property based on the length of the excel sheet
         try{
@@ -136,8 +134,7 @@ btn.addEventListener('click', function() {
         
         //adds the celebrate class to the "congrats" element
         const confettiBox = document.getElementById("confettiBox");
-        (congratsBox.checked)?congratsBlock.classList.add("visually-hidden"):congratsBlock.classList.remove("visually-hidden") && congratsBlock.classList.add("celebrate");
-        //congrats.classList.add('celebrate');
+        congrats.classList.add('celebrate');
         (!confettiBox.checked)?confettiTimer():"";
         
         
@@ -188,7 +185,6 @@ btn.addEventListener('click', function() {
         };
         
     }
-    names.classList.add('list');
     console.log(winnerId)
 });
 function confettiTimer(){
@@ -214,17 +210,17 @@ reset.addEventListener('click', function(){
         //if the box is not checked, it empties the winner(s) to exclude from each new drawing
         if(!excludeWinners.checked){
             winnerId.length = 0;
-            console.log(winnerId)
+            //console.log(winnerId)
         }
         
         //removes the animation class from th UL element
         names.classList.remove('list');
-        congratsBox.classList.remove('celebrate');
+        congrats.classList.remove('celebrate');
         
         //creates an empty LI element in the UL element(makes the animation look cleaner)
         let li = document.createElement('li');
         names.appendChild(li);
-        console.log(winnerId)
+        //console.log(winnerId)
 });
 
 //clears browser of localstorage of winners
@@ -308,8 +304,8 @@ const  xDir = document.getElementById('left-right');
 const  yDir = document.getElementById('top-bottom');
 const  xAxisArr = document.getElementsByName('xAxisRadios');
 const  yAxisArr = document.getElementsByName('yAxisRadios');
-// const congratsBox = document.getElementById('congratsBox');
-// const congratsBlock = document.getElementById('hide-congrats');
+const congratsBox = document.getElementById('congratsBox');
+const congratsBlock = document.getElementById('hide-congrats');
 const confettiBox = document.getElementById("confettiBox");
 const  carouselBox = document.getElementById('hideCarousel');
 const  carouselBlock = document.querySelector('.carousel');
