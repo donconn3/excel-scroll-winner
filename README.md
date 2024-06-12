@@ -1,5 +1,5 @@
 # excel-scroll-winner
-Link to the working version [Raffle Spinner Link](https://raffle-spinner.000webhostapp.com) 
+Link to the working version [Raffle Spinner Link](https://rafflespinner.netlify.app) 
 
 Firefox works best for all data set sizes and duration.
 
@@ -19,7 +19,7 @@ The source for the animation was from a PEN on CodePen(wish I could find it agai
 Uses read-excel-file.js, write-excel-file.js, Boostrap 5.3; written mostly in vanilla JS, HTML, and CSS. 
 <h3>(tl;dr)Basic steps:</h3>
 <ol>
-  <li>Upload an excel file</li>
+  <li>Upload an excel file (.xls or .xlsx)</li>
  <li>Add Title</li>
  <li>Set raffle duration</li>
  <li>Change background/gradient</li>
@@ -38,14 +38,14 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 5.3; written mostly in va
   </ol>
   <h4>Operation:</h4>
   <ol>
-<li>Upload your file (page will reload)
+<li>Upload your file
   <li>Change the name of the raffle and the duration</li>
     <li>Click the checkbox if you want to exclude winners from each drawing or keep them in each time</li>
 <li>Click "Pick Name" (winner is the last person in the 'players' array created below. Winner(s) is logged to the console and in localStorage)
-<li>Once the names stop scrolling, you will have your winner and "Congratualtions" will appear
+<li>Once the names stop scrolling, you will have your winner
 <li>To draw another name, click "New Drawing" and then repeat Step 4
 <li>To download the Winner information, click hamburger icon and then click "Download Winners".
-<li>This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s),(phone, email, raffle #, ticket #, etc.) of winner(s) 
+<li>This will download an excel sheet to your computer with the: DATE+TIME each winner was picked, NAME of the winner(s) and the - phone, email, raffle #, ticket #, etc.- of winner(s) 
 <li>i) DO NOT CLICK "DELETE DRAWING" BEFORE YOU CLICK "DOWNLOAD WINNERS" OR ALL WINNER INFORMATION WILL BE LOST!</strong>
 <li>ii) To start a new drawing with a new list, Complete Step 5, then hit click "Delete Drawing", and then repeat from Step 1
   </ol>
@@ -66,7 +66,9 @@ Uses read-excel-file.js, write-excel-file.js, Boostrap 5.3; written mostly in va
   
 <h4>Future Updates</h4>
 <ul>
-  <li>add carusel of images to show potential prizes</li>
+  <li>add carusel of images to show potential prizes :white_check_mark:</li>
+  <li>collapsible menu sections</li>
+  <li>tips/instructions at the bottom of each section for instruction</li>
   <li>select which columns to read from</li>
   <li>write in names instead of uploading a file</li>
   <li>download winners as a pdf/.doc as wells as spreadsheet</li>
