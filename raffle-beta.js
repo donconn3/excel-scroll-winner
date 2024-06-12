@@ -58,7 +58,7 @@ btn.addEventListener('click', function() {
             data = JSON.parse(sessionStorage.getItem('sheet'));
         }
         
-        if(names.children.length > 1){
+        if(names.children.length > 3){
             return;
         }else{
     
@@ -67,7 +67,7 @@ btn.addEventListener('click', function() {
         
         //sets empty data array to the rows created from promise;
         let fileSize = data.length;
-        
+        (fileSize < 100)?root.style.setProperty('--list-position', '2em'):root.style.setProperty('--list-position', '1.5em');
         
         //a while loop that will keep looping while it's less than the length of the data array\
         try{
@@ -120,7 +120,7 @@ btn.addEventListener('click', function() {
         
         //changes the transform property based on the length of the excel sheet
         try{
-        root.style.setProperty('--doc-length', ((-100 / fileSize) * (fileSize - 1) + '%'));
+        root.style.setProperty('--doc-length', ((-100 / fileSize) * (fileSize - 3) + '%'));
         }catch(e){
             console.error(e instanceof SyntaxError);
               console.error(e.message);
@@ -137,9 +137,10 @@ btn.addEventListener('click', function() {
         congrats.classList.add('celebrate');
         (!confettiBox.checked)?confettiTimer():"";
         
-        
-        //logs the last 'person' to the console, aka. The Winner and their email
-         console.log(players[players.length-1]);
+        let j;
+        for(j = 3; j>0; j--){
+            //logs the last 'person' to the console, aka. The Winner and their email
+         console.log(players[players.length-j]);
       
         
         //creates adate based on the computers date and time
@@ -147,16 +148,15 @@ btn.addEventListener('click', function() {
         let now = time.toLocaleString();
         
         //creates key/value pair of the winner into the local storage with the date as the key and winner name as the value
-        localStorage.setItem(now,players[players.length-1]);
+        localStorage.setItem(now,players[players.length-j]);
         
         //creates a "winner" object with "date","name","contact"
         let winner = {
             date: now,
-            name: players[players.length-1][0],
-            contact: String(players[players.length-1][1])
-        };
-        
-//			//adds "winner" object to GLOBAL "winners" array up top
+            name: players[players.length-j][0],
+            contact: String(players[players.length-j][1])
+        }
+        //adds "winner" object to GLOBAL "winners" array up top
 //			winners.push(winner);
 //
         // checks to see if localstorage has a list of winners (names) already
@@ -183,9 +183,13 @@ btn.addEventListener('click', function() {
         //sets the 'names' value to the updated 'winners' array	
         localStorage.setItem('names', JSON.stringify(winners));
         };
+        }
+        
+        
+//			
         
     }
-    console.log(winnerId)
+    //console.log(winnerId)
 });
 function confettiTimer(){
     setTimeout(function(){
@@ -218,8 +222,12 @@ reset.addEventListener('click', function(){
         congrats.classList.remove('celebrate');
         
         //creates an empty LI element in the UL element(makes the animation look cleaner)
-        let li = document.createElement('li');
-        names.appendChild(li);
+        let li1 = document.createElement('li');
+        let li2 = document.createElement('li');
+        let li3= document.createElement('li');
+        names.appendChild(li1);
+        names.appendChild(li2)
+        names.appendChild(li3)
         //console.log(winnerId)
 });
 

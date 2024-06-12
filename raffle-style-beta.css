@@ -1,6 +1,7 @@
 :root{
-  --box-margin: 18%;
+  --box-margin: 10%;
     --doc-length: -99%;
+    --list-position: 2em;
   --slider-value: 5s;
   --grad2-value: #6a85b6;
   --grad3-value: #bac8e0;
@@ -78,7 +79,7 @@ body {
 }    
 
 .box {
-  height: 140px;
+  height: 280px;
     width: 100%;
   margin: auto;
   overflow: hidden;
@@ -108,8 +109,8 @@ body {
 }
 
 .list {
-  margin: 0;
-  padding: 0;
+  margin-bottom: 0;
+  padding-bottom: var(--list-position);
     
 /*the second value is the duration in seconds of the scroll animation*/
   -webkit-animation: scrollUp var(--slider-value) 0.16s forwards;
@@ -117,10 +118,10 @@ body {
 }
 ul li {
   opacity: 1;
-  height: 120px;
+  height: 90px;
   padding: 10px;
   list-style: none;
-  font-size: 80px;
+  font-size: 70px;
     text-justify: auto;
     text-align: center;
   margin-left: -40px;
