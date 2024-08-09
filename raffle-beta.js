@@ -88,7 +88,7 @@ btn.addEventListener('click', function() {
             
 
             //Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
-            let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
+            let person = [data[player][0].toUpperCase(),data[player][1]];
             
             //adds the 'person' to the 'players' array above
             players.push(person);
