@@ -148,12 +148,17 @@ btn.addEventListener('click', function() {
         
         //creates key/value pair of the winner into the local storage with the date as the key and winner name as the value
         localStorage.setItem(now,players[players.length-1]);
+
+        //get "active" image in carousel
+        let activeImage = document.getElementsByClassName("active")[0].children[0].alt.split(".")[0];
         
         //creates a "winner" object with "date","name","contact"
         let winner = {
             date: now,
             name: players[players.length-1][0],
-            contact: String(players[players.length-1][1])
+            contact: String(players[players.length-1][1]),
+            product: activeImage
+
         };
         
 //			//adds "winner" object to GLOBAL "winners" array up top
@@ -250,6 +255,11 @@ value: results => results.name
 column: 'Ticket/Email',
 type: String,
 value: results => results.contact
+},
+{
+column: 'Prize',
+type: String,
+value: results => results.product
 }
 ];
 writeXlsxFile(results,{ schema, 

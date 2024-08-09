@@ -2,8 +2,8 @@
   --box-margin: 18%;
     --doc-length: -99%;
   --slider-value: 5s;
-  --grad2-value: #6a85b6;
-  --grad3-value: #bac8e0;
+  --grad2-value: #df4638;
+  --grad3-value: #e3aa60;
   --grad-xAxis: ;
   --grad-yAxis: top;
   --grad-values:linear-gradient(to var(--grad-direction),var(--grad2-value) 0%, var(--grad3-value) 100%);
