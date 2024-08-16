@@ -2,6 +2,10 @@
 window.onload = () =>{
     setDefaults();
 }
+// const readSchema = {
+
+// }
+
 const input = document.getElementById('input');
 let raffleTitle = document.getElementById('raffle-title');
 const sheet1= document.styleSheets[1];
@@ -42,14 +46,37 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
 alert('Invalid file type');
 input.value = '';
 }else{
+console.log("foobar")
+    const fileHeaderRow = document.getElementById("fileHeader");
+    const fileBodyRows = document.getElementById("fileBody");
+
     //reads file //grabs first sheet // promise of rows
     readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
-        data = rows;
+        data = rows.splice(0, 6);
         sessionStorage.setItem('sheet',JSON.stringify(data));
         }
     );
-}
+    
+    
+//trying to get this to run so it will create a header for each column in the file
+}for(header in data[0]){
+        console.log("foo")
+        let tableHead = document.createElement("th");
+        tableHead.setAttribute("scope","col");
+        tableHead.innerHTML = `
+        <h3>${header}</h3>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Display
+                  </label>
+                </div>
+        `;
+
+        fileHeaderRow.append(tableHead);
+        console.log("bar")
+    }
 }
 
 //on click of PICK NAME runs function
@@ -235,7 +262,7 @@ winnerId.length = 0;
 //creates excel file of winners in localstorage and auto-downloads to computer
 function exportPage(){
 const results = JSON.parse(localStorage.names);
-const schema = [
+const writeSchema = [
 {
 column: 'Date/Time',
 type: String,
@@ -252,7 +279,7 @@ type: String,
 value: results => results.contact
 }
 ];
-writeXlsxFile(results,{ schema, 
+writeXlsxFile(results,{ writeSchema, 
 fileName: 'raffleWinners.xlsx'
 })
 };

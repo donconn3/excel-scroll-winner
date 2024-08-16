@@ -213,11 +213,69 @@ How it Works:
 
     </div>
   </div>
+  <!--FILE MODAL-->
+  <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Pick which values will be displayed</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead >
+            <tr id="fileHeader">
+              
+            </tr>
+          </thead>
+          <tbody id="fileBody">
+            <tr>
+ 
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@fat</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--CONFETTI-->
   <div class="position-absolute z-1" id="confetti">
       <img src="" width="100%" id="confettiImg">
   </div>
-  <!--Raffle Main-->
+  <!--RAFFLE MAIN-->
   <div class="container" style="padding-top: 25px; padding-left: 25px">
     <div class="row">
       <div class="col-xs-12">
@@ -244,6 +302,10 @@ How it Works:
       <div class="col-xs-12 no-padding z-2">
         <button id="get-data" type="button" class="btn btn-success"><i class="bi bi-hand-index"></i> PICK NAME </button>
         <button id="reset" type="button" class="btn btn-danger"><i class="bi bi-arrow-clockwise"></i> NEW DRAWING </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Launch demo modal
+        </button>
+        
       </div>
     </div>
     <div class="row w-75 h-auto pt-2 mx-auto">
