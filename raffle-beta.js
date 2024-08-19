@@ -12,6 +12,10 @@ const sheet1= document.styleSheets[1];
 let body = document.getElementById('grad1');
 let root = document.documentElement;
 let btn = document.getElementById('get-data');
+const colDisplay = document.getElementById("colDisplay");
+const fileBodyRows = document.getElementById("fileBody");
+let entry = [];
+let colChecked =[];
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
 let congrats = document.getElementById('congrats');
@@ -47,27 +51,43 @@ alert('Invalid file type');
 input.value = '';
 }else{
 console.log("foobar")
+const sampleTable = document.querySelector(".table");
+sampleTable.innerHTML = `
+<thead >
+            <tr id="fileHeader">
+              
+            </tr>
+          </thead>
+          <tbody id="fileBody">
+            <tr id="fileBody1">
+            </tr>
+            <tr id="fileBody2">
+            </tr>
+            <tr id="fileBody3">
+            </tr>
+            <tr id="fileBody4">
+            </tr>
+            <tr id="fileBody5">
+            </tr>
+          </tbody>`;
+
     const fileHeaderRow = document.getElementById("fileHeader");
-    const fileBodyRows = document.getElementById("fileBody");
 
     //reads file //grabs first sheet // promise of rows
     readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
         data = rows.splice(0, 6);
         sessionStorage.setItem('sheet',JSON.stringify(data));
-        }
-    );
-    
-    
-//trying to get this to run so it will create a header for each column in the file
-}for(header in data[0]){
-        console.log("foo")
+        
+        for(const header of data[0]){
+        //console.log("foo")
         let tableHead = document.createElement("th");
         tableHead.setAttribute("scope","col");
+        //tableHead.innerText = header;
         tableHead.innerHTML = `
         <h3>${header}</h3>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <input class="form-check-input" type="checkbox" value="" id="displayCheck">
                   <label class="form-check-label" for="flexCheckChecked">
                     Display
                   </label>
@@ -76,8 +96,31 @@ console.log("foobar")
 
         fileHeaderRow.append(tableHead);
         console.log("bar")
-    }
+            }
+        
+        for(let i = 1; i < data.length; i++){
+            for(const obj of data[i]){
+                let row = document.getElementById("fileBody" + i);
+                const tableData = document.createElement("td");
+
+                tableData.innerText = obj;
+                row.append(tableData);
+            }
+        }        
+
+    });
+    
+    
+//trying to get this to run so it will create a header for each column in the file
+
 }
+}
+
+colDisplay.addEventListener("click", ()=>{
+    const displayCheckBoxes = document.querySelectorAll("#displayCheck");
+
+
+})
 
 //on click of PICK NAME runs function
 btn.addEventListener('click', function() {
