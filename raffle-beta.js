@@ -14,8 +14,6 @@ let root = document.documentElement;
 let btn = document.getElementById('get-data');
 const colDisplay = document.getElementById("colDisplay");
 const fileBodyRows = document.getElementById("fileBody");
-let entry = [];
-let colChecked =[];
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
 let congrats = document.getElementById('congrats');
@@ -50,7 +48,7 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
 alert('Invalid file type');
 input.value = '';
 }else{
-console.log("foobar")
+//console.log("foobar")
 const sampleTable = document.querySelector(".table");
 sampleTable.innerHTML = `
 <thead >
@@ -76,10 +74,11 @@ sampleTable.innerHTML = `
     //reads file //grabs first sheet // promise of rows
     readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
-        data = rows.splice(0, 6);
+        data = rows;
+        let sampleData = rows.splice(0, 6);
         sessionStorage.setItem('sheet',JSON.stringify(data));
         
-        for(const header of data[0]){
+        for(const header of sampleData[0]){
         //console.log("foo")
         let tableHead = document.createElement("th");
         tableHead.setAttribute("scope","col");
@@ -95,11 +94,11 @@ sampleTable.innerHTML = `
         `;
 
         fileHeaderRow.append(tableHead);
-        console.log("bar")
+        //console.log("bar")
             }
         
-        for(let i = 1; i < data.length; i++){
-            for(const obj of data[i]){
+        for(let i = 1; i < sampleData.length; i++){
+            for(const obj of sampleData[i]){
                 let row = document.getElementById("fileBody" + i);
                 const tableData = document.createElement("td");
 
@@ -109,18 +108,11 @@ sampleTable.innerHTML = `
         }        
 
     });
-    
-    
-//trying to get this to run so it will create a header for each column in the file
+
 
 }
 }
 
-colDisplay.addEventListener("click", ()=>{
-    const displayCheckBoxes = document.querySelectorAll("#displayCheck");
-
-
-})
 
 //on click of PICK NAME runs function
 btn.addEventListener('click', function() {
@@ -137,8 +129,8 @@ btn.addEventListener('click', function() {
         
         //sets empty data array to the rows created from promise;
         let fileSize = data.length;
-        
-        
+        const displayCheckBoxes = document.querySelectorAll("#displayCheck");
+
         //a while loop that will keep looping while it's less than the length of the data array\
         try{
         while(counter < fileSize - winnerId.length){
@@ -154,11 +146,28 @@ btn.addEventListener('click', function() {
             //checks to see if the player has already been picked
             }if(!exclusions.includes(player)){
 
-//insert switch case here to edit how a player is saved
+        //insert switch case here to edit how a player is saved
+        let person =[];
+        function entry(player){
+            for(let i = 0; i < displayCheckBoxes.length; i++){
+                if((displayCheckBoxes[i].checked === true) && (person.length === 0)){
+                    person[0] = data[player][i].toUpperCase();
+                
+            }else if((displayCheckBoxes[i].checked === true) && (person.length > 0)){
+                person[0] += " " + data[player][i].toUpperCase();
+       
+            }else if((displayCheckBoxes[i].checked === false) && (person[1] === undefined)){
+                person[1] = data[player][i];
+        
+            }else{
+                person[1] += " - " + data[player][i];
+        
+            }
+        }
+    }
+    entry(player);
             
-
             //Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
-            let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
             
             //adds the 'person' to the 'players' array above
             players.push(person);
@@ -177,8 +186,7 @@ btn.addEventListener('click', function() {
     return;
 }
         //uncomment below to see each 'players' array created
-        //console.log(players)
-        
+
         //loops through the 'players', adds an LI element with the name of the 'person'
         for(let i = 0; i < players.length; i++){
             let li=document.createElement('li');
@@ -322,7 +330,7 @@ type: String,
 value: results => results.contact
 }
 ];
-writeXlsxFile(results,{ writeSchema, 
+writeXlsxFile(results,writeSchema,{ 
 fileName: 'raffleWinners.xlsx'
 })
 };
