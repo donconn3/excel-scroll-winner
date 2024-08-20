@@ -12,8 +12,8 @@ const sheet1= document.styleSheets[1];
 let body = document.getElementById('grad1');
 let root = document.documentElement;
 let btn = document.getElementById('get-data');
-const colDisplay = document.getElementById("colDisplay");
-const fileBodyRows = document.getElementById("fileBody");
+//const colDisplay = document.getElementById("colDisplay");
+//const fileBodyRows = document.getElementById("fileBody");
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
 let congrats = document.getElementById('congrats');
@@ -45,12 +45,12 @@ function validateFile(){
 
     // Allowing file type
 if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
-alert('Invalid file type');
-input.value = '';
+    alert('Invalid file type');
+    input.value = '';
 }else{
-//console.log("foobar")
-const sampleTable = document.querySelector(".table");
-sampleTable.innerHTML = `
+    //console.log("foobar")
+    const sampleTable = document.querySelector(".table");
+    sampleTable.innerHTML = `
 <thead >
             <tr id="fileHeader">
               
@@ -67,7 +67,7 @@ sampleTable.innerHTML = `
             </tr>
             <tr id="fileBody5">
             </tr>
-          </tbody>`;
+            </tbody>`;
 
     const fileHeaderRow = document.getElementById("fileHeader");
 
@@ -79,10 +79,8 @@ sampleTable.innerHTML = `
         sessionStorage.setItem('sheet',JSON.stringify(data));
         
         for(const header of sampleData[0]){
-        //console.log("foo")
         let tableHead = document.createElement("th");
         tableHead.setAttribute("scope","col");
-        //tableHead.innerText = header;
         tableHead.innerHTML = `
         <h3>${header}</h3>
                 <div class="form-check">
@@ -94,7 +92,6 @@ sampleTable.innerHTML = `
         `;
 
         fileHeaderRow.append(tableHead);
-        //console.log("bar")
             }
         
         for(let i = 1; i < sampleData.length; i++){
@@ -105,12 +102,14 @@ sampleTable.innerHTML = `
                 tableData.innerText = obj;
                 row.append(tableData);
             }
-        }        
+        } 
 
     });
-
+    
 
 }
+
+  
 }
 
 
@@ -186,6 +185,7 @@ btn.addEventListener('click', function() {
     return;
 }
         //uncomment below to see each 'players' array created
+        //console.log(players)
 
         //loops through the 'players', adds an LI element with the name of the 'person'
         for(let i = 0; i < players.length; i++){
@@ -313,7 +313,7 @@ winnerId.length = 0;
 //creates excel file of winners in localstorage and auto-downloads to computer
 function exportPage(){
 const results = JSON.parse(localStorage.names);
-const writeSchema = [
+const schema = [
 {
 column: 'Date/Time',
 type: String,
@@ -330,7 +330,7 @@ type: String,
 value: results => results.contact
 }
 ];
-writeXlsxFile(results,writeSchema,{ 
+writeXlsxFile(results,{schema, 
 fileName: 'raffleWinners.xlsx'
 })
 };
