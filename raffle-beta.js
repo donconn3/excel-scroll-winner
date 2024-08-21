@@ -41,14 +41,14 @@ let data = [];
 let players = [];
 
 function validateFile(){
-    let ele = input.value.split(".");
 
     // Allowing file type
 if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
     alert('Invalid file type');
     input.value = '';
 }else{
-    //console.log("foobar")
+    let modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('dataSample')) // Returns a Bootstrap modal instance
+
     const sampleTable = document.querySelector(".table");
     sampleTable.innerHTML = `
 <thead >
@@ -72,7 +72,7 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
     const fileHeaderRow = document.getElementById("fileHeader");
 
     //reads file //grabs first sheet // promise of rows
-    readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
+readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
         data = rows;
         let sampleData = rows.splice(0, 6);
@@ -94,7 +94,7 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
         fileHeaderRow.append(tableHead);
             }
         
-        for(let i = 1; i < sampleData.length; i++){
+         for(let i = 1; i < sampleData.length; i++){
             for(const obj of sampleData[i]){
                 let row = document.getElementById("fileBody" + i);
                 const tableData = document.createElement("td");
@@ -103,7 +103,7 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
                 row.append(tableData);
             }
         } 
-
+        modal.show();
     });
     
 
@@ -156,10 +156,10 @@ btn.addEventListener('click', function() {
                 person[0] += " " + data[player][i].toUpperCase();
        
             }else if((displayCheckBoxes[i].checked === false) && (person[1] === undefined)){
-                person[1] = data[player][i];
+                (data[player][1] === undefined)? person[1] = " ": person[1] = data[player][i];
         
             }else{
-                person[1] += " - " + data[player][i];
+                (data[player][1] === undefined)? person[1] = " ": person[1] += " - " + data[player][i];
         
             }
         }
@@ -231,7 +231,7 @@ btn.addEventListener('click', function() {
         let winner = {
             date: now,
             name: players[players.length-1][0],
-            contact: String(players[players.length-1][1])
+            contact: (players[players.length-1][1] === undefined)? "": String(players[players.length-1][1])
         };
         
 //			//adds "winner" object to GLOBAL "winners" array up top
