@@ -2,12 +2,18 @@
 window.onload = () =>{
     setDefaults();
 }
+// const readSchema = {
+
+// }
+
 const input = document.getElementById('input');
 let raffleTitle = document.getElementById('raffle-title');
 const sheet1= document.styleSheets[1];
 let body = document.getElementById('grad1');
 let root = document.documentElement;
 let btn = document.getElementById('get-data');
+//const colDisplay = document.getElementById("colDisplay");
+//const fileBodyRows = document.getElementById("fileBody");
 let reset = document.getElementById('reset');
 let names = document.getElementById('names');
 let congrats = document.getElementById('congrats');
@@ -35,22 +41,77 @@ let data = [];
 let players = [];
 
 function validateFile(){
-    let ele = input.value.split(".");
 
     // Allowing file type
 if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
-alert('Invalid file type');
-input.value = '';
+    alert('Invalid file type');
+    input.value = '';
 }else{
+    let modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('dataSample')) // Returns a Bootstrap modal instance
+
+    const sampleTable = document.querySelector(".table");
+    sampleTable.innerHTML = `
+<thead >
+            <tr id="fileHeader">
+              
+            </tr>
+          </thead>
+          <tbody id="fileBody">
+            <tr id="fileBody1">
+            </tr>
+            <tr id="fileBody2">
+            </tr>
+            <tr id="fileBody3">
+            </tr>
+            <tr id="fileBody4">
+            </tr>
+            <tr id="fileBody5">
+            </tr>
+            </tbody>`;
+
+    const fileHeaderRow = document.getElementById("fileHeader");
+
     //reads file //grabs first sheet // promise of rows
-    readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
+readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
         data = rows;
+        let sampleData = rows.splice(0, 6);
         sessionStorage.setItem('sheet',JSON.stringify(data));
-        }
-    );
+        
+        for(const header of sampleData[0]){
+        let tableHead = document.createElement("th");
+        tableHead.setAttribute("scope","col");
+        tableHead.innerHTML = `
+        <h3>${header}</h3>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="displayCheck">
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Display
+                  </label>
+                </div>
+        `;
+
+        fileHeaderRow.append(tableHead);
+            }
+        
+         for(let i = 1; i < sampleData.length; i++){
+            for(const obj of sampleData[i]){
+                let row = document.getElementById("fileBody" + i);
+                const tableData = document.createElement("td");
+
+                tableData.innerText = obj;
+                row.append(tableData);
+            }
+        } 
+        modal.show();
+    });
+    
+
 }
+
+  
 }
+
 
 //on click of PICK NAME runs function
 btn.addEventListener('click', function() {
@@ -67,8 +128,8 @@ btn.addEventListener('click', function() {
         
         //sets empty data array to the rows created from promise;
         let fileSize = data.length;
-        
-        
+        const displayCheckBoxes = document.querySelectorAll("#displayCheck");
+
         //a while loop that will keep looping while it's less than the length of the data array\
         try{
         while(counter < fileSize - winnerId.length){
@@ -84,11 +145,28 @@ btn.addEventListener('click', function() {
             //checks to see if the player has already been picked
             }if(!exclusions.includes(player)){
 
-//insert switch case here to edit how a player is saved
+        //insert switch case here to edit how a player is saved
+        let person =[];
+        function entry(player){
+            for(let i = 0; i < displayCheckBoxes.length; i++){
+                if((displayCheckBoxes[i].checked === true) && (person.length === 0)){
+                    person[0] = data[player][i].toUpperCase();
+                
+            }else if((displayCheckBoxes[i].checked === true) && (person.length > 0)){
+                person[0] += " " + data[player][i].toUpperCase();
+       
+            }else if((displayCheckBoxes[i].checked === false) && (person[1] === undefined)){
+                (data[player][1] === undefined)? person[1] = " ": person[1] = data[player][i];
+        
+            }else{
+                (data[player][1] === undefined)? person[1] = " ": person[1] += " - " + data[player][i];
+        
+            }
+        }
+    }
+    entry(player);
             
-
             //Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
-            let person = [data[player][0].toUpperCase() + ' ' + data[player][1].toUpperCase(), data[player][2]];
             
             //adds the 'person' to the 'players' array above
             players.push(person);
@@ -108,7 +186,7 @@ btn.addEventListener('click', function() {
 }
         //uncomment below to see each 'players' array created
         //console.log(players)
-        
+
         //loops through the 'players', adds an LI element with the name of the 'person'
         for(let i = 0; i < players.length; i++){
             let li=document.createElement('li');
@@ -153,7 +231,7 @@ btn.addEventListener('click', function() {
         let winner = {
             date: now,
             name: players[players.length-1][0],
-            contact: String(players[players.length-1][1])
+            contact: (players[players.length-1][1] === undefined)? "": String(players[players.length-1][1])
         };
         
 //			//adds "winner" object to GLOBAL "winners" array up top
@@ -252,7 +330,7 @@ type: String,
 value: results => results.contact
 }
 ];
-writeXlsxFile(results,{ schema, 
+writeXlsxFile(results,{schema, 
 fileName: 'raffleWinners.xlsx'
 })
 };

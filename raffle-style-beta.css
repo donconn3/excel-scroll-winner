@@ -13,6 +13,9 @@
 
 html {
   height: 100%;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
 body {
@@ -20,7 +23,7 @@ body {
   display: flex;
 /*  font-size: 18px;*/
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
     background-image: linear-gradient(to var(--grad-yAxis) var(--grad-xAxis) , var(--grad2-value) 0%, var(--grad3-value) 100%);
 }
 
