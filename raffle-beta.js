@@ -130,27 +130,12 @@ btn.addEventListener('click', function() {
         let fileSize = data.length;
         const displayCheckBoxes = document.querySelectorAll("#displayCheck");
 
-        //This is used for the crypto use down below
-        //let randoArray = new Uint16Array(1);
-
-
         //a while loop that will keep looping while it's less than the length of the data array\
         try{
         while(counter < fileSize - winnerId.length){
-
+            
             //randomly picks 1 person from excel sheet
             let player = Math.floor(Math.random() * fileSize);
-            
-            //way to slow - needs a btter level of entropy - maybe look at time divided by random number * filesize **03/19/25
-            //NEW IDEA - Use current Randomness for show and then use randoArray to pick actual winner. Increase to 32 and build function to put person at the very end**03/19/25
-            
-            //let player;
-            // crypto.getRandomValues(randoArray);
-            // Math.floor((randoArray[0]/50000)*fileSize)
-           
-           
-            
-            
 
             //checks to see if the email/ticket number matches those from previous winners 
             //only matters if you want to exclude previous winners
@@ -197,7 +182,6 @@ btn.addEventListener('click', function() {
     } 
 } catch(err){
     alert("Oops! There seems to be an empty cell(s)/numbers in the A or B column of the file. Upload again once fixed. Error: " + err);
-    console.log(err)
     return;
 }
         //uncomment below to see each 'players' array created
