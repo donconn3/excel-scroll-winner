@@ -75,7 +75,7 @@ if (!input.value.includes('xls') || !input.value.includes('xlsx')) {
 readXlsxFile(input.files[0], {includeNullValues: true}).then(function(rows) {
     //location.reload();
         data = rows;
-        let sampleData = rows.splice(0, 6);
+        let sampleData = rows.slice(0, 6);
         sessionStorage.setItem('sheet',JSON.stringify(data));
         
         for(const header of sampleData[0]){
@@ -147,24 +147,25 @@ btn.addEventListener('click', function() {
 
         //insert switch case here to edit how a player is saved
         let person =[];
-        function entry(player){
-            for(let i = 0; i < displayCheckBoxes.length; i++){
-                if((displayCheckBoxes[i].checked === true) && (person.length === 0)){
-                    person[0] = data[player][i].toUpperCase();
+    //     function entry(player){
+    //         for(let i = 0; i < displayCheckBoxes.length; i++){
+    //             if((displayCheckBoxes[i].checked === true) && (person.length === 0)){
+    //                 person[0] = data[player][i].toUpperCase();
                 
-            }else if((displayCheckBoxes[i].checked === true) && (person.length > 0)){
-                person[0] += " " + data[player][i].toUpperCase();
+    //         }else if((displayCheckBoxes[i].checked === true) && (person.length > 0)){
+    //             person[0] += " " + data[player][i].toUpperCase();
        
-            }else if((displayCheckBoxes[i].checked === false) && (person[1] === undefined)){
-                (data[player][1] === undefined)? person[1] = " ": person[1] = data[player][i];
+    //         }else if((displayCheckBoxes[i].checked === false) && (person[1] === undefined)){
+    //             (data[player][1] === undefined)? person[1] = " ": person[1] = data[player][i];
         
-            }else{
-                (data[player][1] === undefined)? person[1] = " ": person[1] += " - " + data[player][i];
+    //         }else{
+    //             (data[player][1] === undefined)? person[1] = " ": person[1] += " - " + data[player][i];
         
-            }
-        }
-    }
-    entry(player);
+    //         }
+    //     }
+        
+    // }
+    playerLookUp(player, person);
             
             //Creates a 'person' array of the first and last name as 1 string, and their email(or third column) as the second string
             
@@ -179,11 +180,69 @@ btn.addEventListener('click', function() {
             
          }
         
-    } 
+    }
+//CRYPTO number for Winner
+function cryptoWinner(){
+    const chickenDinner = new Uint32Array(10);
+    crypto.getRandomValues(chickenDinner);
+    let rando = Math.floor(Math.random() * 10);
+    const min = 1000000000;
+    const max = 10000000000;
+    let randoDigit = 0;
+    let winNum = 0;
+try{
+    if(chickenDinner[rando] < min){
+        randoDigit = chickenDinner[rando] / min;
+        winNum = Math.round(fileSize * randoDigit)
+        if(!winnerId.includes(winNum)){
+            exclusions.push(winNum);
+            console.log(winNum);
+
+        }else{
+            cryptoWinner();
+        };
+        
+    }else{
+        randoDigit = chickenDinner[rando] / max;
+        winNum = Math.round(fileSize * randoDigit)
+        if(!winnerId.includes(winNum)){
+            exclusions.push(winNum);
+            console.log(winNum);
+
+        }else{
+            cryptoWinner();
+        }
+        // while(!winnerId.includes(winNum)){
+
+
+        // }
+    }
+}catch(err){
+              console.error(err.message);
+              console.error(err.name);
+              console.error(err.cause);
+    alert(err + ": Something went wrong picking the winner. Try again.");
+}
+
+    return winNum;
+}
+let person = [];
+//console.log(winNum);
+playerLookUp(cryptoWinner(), person);
+//adds the 'person' to the 'players' array above
+players.push(person);
+//exclusions.push(cryptoWinner());
+
+
 } catch(err){
-    alert("Oops! There seems to be an empty cell(s)/numbers in the A or B column of the file. Upload again once fixed. Error: " + err);
+            console.error(err.message);
+              console.error(err.name);
+              console.error(err.cause);
+    alert("Unreadable values in the A or B column of the file. Make sure there are no numbers, empty cells, or special characters. Upload again once fixed. Error: " + err);
     return;
 }
+
+
         //uncomment below to see each 'players' array created
         //console.log(players)
 
@@ -261,10 +320,31 @@ btn.addEventListener('click', function() {
         //sets the 'names' value to the updated 'winners' array	
         localStorage.setItem('names', JSON.stringify(winners));
         };
-        
+
+         function playerLookUp(index, array){
+        for(let i = 0; i < displayCheckBoxes.length; i++){
+            if((displayCheckBoxes[i].checked === true) && (array.length === 0)){
+                array[0] = data[index][i].toUpperCase();
+            
+        }else if((displayCheckBoxes[i].checked === true) && (array.length > 0)){
+            array[0] += " " + data[index][i].toUpperCase();
+    
+        }else if((displayCheckBoxes[i].checked === false) && (array[1] === undefined)){
+            (data[index][1] === undefined)? array[1] = " ": array[1] = data[index][i];
+    
+        }else{
+            (data[index][1] === undefined)? array[1] = " ": array[1] += " - " + data[index][i];
+    
+        }
+    
+    }
+    
+    }
     }
     console.log(winnerId)
+   
 });
+
 function confettiTimer(){
     setTimeout(function(){
         confettiImg.src = "/confetti.gif";
